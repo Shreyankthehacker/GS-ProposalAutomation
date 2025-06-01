@@ -13,7 +13,7 @@ load_dotenv()
 
 llm_strategy = LLMExtractionStrategy(
     llm_config=LLMConfig(
-        provider="gemini/gemini-2.0-flash",
+        provider="gemini/gemini-1.5-flash",
         api_token=os.getenv("GOOGLE_API_KEY"),
     ),
     schema=User.model_json_schema(),
@@ -54,29 +54,48 @@ browser_cfg = BrowserConfig(headless=True)
 
 import re 
 
-def aggregate_users(users: List[User]) -> User:
-    if not users:
-        raise ValueError("User list is empty")
+import re
+from collections import Counter
+from typing import List
 
-    # Pick any name — first is fine
-    name = users[0]['name']
 
-    # Find the first logo URL that contains "logo" in it
-    logo = next((u['logo'] for u in users if re.search(r'logo', u['logo'], re.IGNORECASE)), None)
 
-    # Get the longest description
-    description = max((u['description'] for u in users), key=len, default="")
 
-    # Combine all services, remove duplicates
-    combined_services = list({service for user in users for service in user['services']})
+def aggregate_users(users: List[dict]) -> User:
+    print("🔍 Starting aggregation of users...")
 
+    # Filter out users with error=True
+    valid_users = [u for u in users if not u.get('error', False)]
+
+
+    # Most frequent name (non-empty and non-None)
+    names = [u.get('name', '') or '' for u in valid_users if u.get('name')]
+    name_counter = Counter(names)
+    name = name_counter.most_common(1)[0][0] if name_counter else (valid_users[0].get('name') or "Unknown")
+    logo = next(
+        (
+            logo for u in valid_users
+            if (logo := u.get('logo')) and isinstance(logo, str) and re.search(r'logo', logo, re.IGNORECASE)
+        ),
+        ""
+    )
+
+
+    # Longest non-empty description
+    descriptions = [u.get('description', '') or '' for u in valid_users]
+    description = max(descriptions, key=len, default="")
+
+    # Services list from user with the longest list (non-None)
+    all_service_lists = [
+        (u.get('name', 'Unknown'), u.get('services') or []) for u in valid_users
+    ]
+    services = max((s for _, s in all_service_lists), key=len, default=[])
     return User(
         name=name,
         logo=logo,
         description=description,
-        services=combined_services
+        services=services
     )
-
 
 async def get_data(url:str):
 

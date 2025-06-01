@@ -7,9 +7,9 @@ from SearchAndRecommendation.websiterecommendation.url_utils import get_urls
 from WebScraper.scrape import get_data
 from WebScraper.scrape_utils import extract_hex_colors
 from SearchAndRecommendation.prompt_suggestion.recommend import get_recommendation,get_detailed_module_breakdown
-
-
 from WebScraper.state import User
+
+
 
 buyer = None
 seller =None 
@@ -129,8 +129,8 @@ def create_company_section(section_name, section_key):
         st.session_state[f'{section_key}_suggested_urls'] = []
     if f'{section_key}_last_company' not in st.session_state:
         st.session_state[f'{section_key}_last_company'] = ""
-    if f'{section_key}_current_url' not in st.session_state:
-        st.session_state[f'{section_key}_current_url'] = ""
+    if f'{section_key}_final_url' not in st.session_state:
+        st.session_state[f'{section_key}_final_url'] = ""
     if f'{section_key}_scraped_data' not in st.session_state:
         st.session_state[f'{section_key}_scraped_data'] = None
     if f'{section_key}_company_name' not in st.session_state:
@@ -139,14 +139,14 @@ def create_company_section(section_name, section_key):
         st.session_state[f'{section_key}_urls_fetched'] = False
     if f'{section_key}_show_url_warning' not in st.session_state:
         st.session_state[f'{section_key}_show_url_warning'] = False
-    
+
     # Company name input
     company_name = st.text_input(
         f"Enter {section_name} Company Name", 
         value=st.session_state[f'{section_key}_company_name'],
         key=f"{section_key}_name"
     )
-    
+
     # Update session state when company name changes
     if company_name != st.session_state[f'{section_key}_company_name']:
         st.session_state[f'{section_key}_company_name'] = company_name
@@ -154,7 +154,7 @@ def create_company_section(section_name, section_key):
         st.session_state[f'{section_key}_urls_fetched'] = False
         st.session_state[f'{section_key}_show_url_warning'] = False
         st.session_state[f'{section_key}_suggested_urls'] = []
-    
+
     # Show "Get Suggestions" button only if company name exists and URLs haven't been fetched
     if company_name and not st.session_state[f'{section_key}_urls_fetched']:
         if st.button(f"🔍 Get Website Suggestions for {company_name}", key=f"{section_key}_fetch_btn"):
@@ -183,7 +183,7 @@ def create_company_section(section_name, section_key):
                     st.session_state[f'{section_key}_show_url_warning'] = True
                 
                 st.rerun()
-    
+
     # Show "Search Again" button if URLs have been fetched
     if st.session_state[f'{section_key}_urls_fetched'] and company_name:
         col1, col2 = st.columns([1, 4])
@@ -193,58 +193,86 @@ def create_company_section(section_name, section_key):
                 st.session_state[f'{section_key}_suggested_urls'] = []
                 st.session_state[f'{section_key}_show_url_warning'] = False
                 st.rerun()
-    
-    # URL input section
+
+    # URL input section with 2-column layout
     st.write("**Company Website**")
-    
-    # Show dropdown only if we have successfully fetched URLs
-    if (st.session_state[f'{section_key}_urls_fetched'] and 
-        st.session_state[f'{section_key}_suggested_urls'] and 
-        len(st.session_state[f'{section_key}_suggested_urls']) > 0):
-        
-        st.write("**Select from suggested URLs:**")
-        
-        # Create dropdown options
-        dropdown_options = ["Select a URL..."] + st.session_state[f'{section_key}_suggested_urls']
-        
-        selected_url = st.selectbox(
-            "Choose URL:",
-            options=dropdown_options,
-            key=f"{section_key}_url_dropdown",
-            help="Select a suggested URL or enter manually below"
-        )
-        
-        # If user selected a URL from dropdown, update the text input
-        if selected_url != "Select a URL..." and selected_url != st.session_state[f'{section_key}_current_url']:
-            st.session_state[f'{section_key}_current_url'] = selected_url
-    
-    # Show warning only if we've attempted to fetch URLs and found none
-    elif st.session_state[f'{section_key}_show_url_warning']:
-        st.warning(f"⚠️ Couldn't find any relevant websites for {company_name}. Please enter the URL manually below.")
 
-    # Main text input where user can type (always visible)
-    final_url = st.text_input(
-        "Website URL:",
-        value=st.session_state[f'{section_key}_current_url'],
-        placeholder=f"Enter {section_name.lower()} company website URL (e.g., https://example.com)",
-        help="Enter the complete URL including https://",
-        key=f"{section_key}_url_input"
-    )
+    # Create two columns for URL input
+    url_col1, url_col2 = st.columns([3, 2])
 
-    # Update session state when text input changes
-    if final_url != st.session_state[f'{section_key}_current_url']:
-        st.session_state[f'{section_key}_current_url'] = final_url
+    with url_col1:
+        # Show warning only if we've attempted to fetch URLs and found none
+        if st.session_state[f'{section_key}_show_url_warning']:
+            st.warning(f"⚠️ Couldn't find websites for {company_name}. Enter URL manually:")
         
-    # Display final URL and scraping section     
-    if final_url:
-        st.markdown(f"🔗 Final Website URL: [{final_url}]({final_url})")
-                
-        # Validate URL format
-        if final_url.startswith(('http://', 'https://')):
-            st.success("✅ Valid URL format")
-                        
-            # SCRAPING SECTION
-            st.write("---")
+        # Show dropdown if we have successfully fetched URLs
+        if (st.session_state[f'{section_key}_urls_fetched'] and 
+            st.session_state[f'{section_key}_suggested_urls'] and 
+            len(st.session_state[f'{section_key}_suggested_urls']) > 0):
+            
+            st.write("**Select or Enter URL:**")
+            
+            # Create dropdown options with manual entry option
+            dropdown_options = ["Type URL manually..."] + st.session_state[f'{section_key}_suggested_urls']
+            
+            selected_option = st.selectbox(
+               '',
+                options=dropdown_options,
+                key=f"{section_key}_url_dropdown",
+                help="Select a suggested URL or choose 'Type URL manually' to enter your own"
+            )
+            
+            # If user selected a suggested URL, update the final URL
+            if selected_option != "Type URL manually..." and selected_option in st.session_state[f'{section_key}_suggested_urls']:
+                st.session_state[f'{section_key}_final_url'] = selected_option
+            
+            # Show text input only if "Type URL manually" is selected or no selection made
+            if selected_option == "Type URL manually...":
+                manual_url = st.text_input(
+                    "Enter URL:",
+                    value=st.session_state[f'{section_key}_final_url'] if selected_option == "Type URL manually..." else "",
+                    placeholder=f"https://example.com",
+                    key=f"{section_key}_manual_url_input"
+                )
+                if manual_url:
+                    st.session_state[f'{section_key}_final_url'] = manual_url
+        
+        else:
+            # Show only text input if no suggestions available
+            st.write("**Enter Website URL:**")
+            manual_url = st.text_input(
+                "Website URL:",
+                value=st.session_state[f'{section_key}_final_url'],
+                placeholder=f"Enter {section_name.lower()} company website URL (e.g., https://example.com)",
+                help="Enter the complete URL including https://",
+                key=f"{section_key}_direct_url_input"
+            )
+            
+            if manual_url != st.session_state[f'{section_key}_final_url']:
+                st.session_state[f'{section_key}_final_url'] = manual_url
+
+    with url_col2:
+        # Display final URL in right column
+        if st.session_state[f'{section_key}_final_url']:
+            st.write("**Final Website URL:**")
+            final_url = st.session_state[f'{section_key}_final_url']
+            st.markdown(f"🔗 [{final_url}]({final_url})")
+            
+            # Validate URL format
+            if final_url.startswith(('http://', 'https://')):
+                st.success("✅ Valid URL")
+            else:
+                st.error("❌ Invalid URL format")
+        else:
+            st.write("**Final Website URL:**")
+            st.info("No URL selected yet")
+
+    # Continue with scraping section if valid URL exists
+    if (st.session_state[f'{section_key}_final_url'] and 
+        st.session_state[f'{section_key}_final_url'].startswith(('http://', 'https://'))):
+            
+        # SCRAPING SECTION
+        st.write("---")
     st.write("**🔍 Website Scraping**")
                         
     col1, col2 = st.columns([1, 1])
@@ -499,18 +527,24 @@ st.divider()
 
 #---------------------------------------------
 
+
+
 st.subheader("Client Requirement")
 
 # Create two columns
 left_col, right_col = st.columns(2)
 
-# Session state for client requirement and recommendation (kept separate)
+# Initialize session state
 if "client_requirement" not in st.session_state:
     st.session_state.client_requirement = ""
-if "time_cost_recommendation" not in st.session_state:
-    st.session_state.time_cost_recommendation = ""
+if "suggestions" not in st.session_state:
+    st.session_state.suggestions = []
+if "suggestion_details" not in st.session_state:
+    st.session_state.suggestion_details = {}
+if "temp_suggestion" not in st.session_state:
+    st.session_state.temp_suggestion = ""
 
-# LEFT: Client requirement input only
+# LEFT: Text area for client requirements
 with left_col:
     st.session_state.client_requirement = st.text_area(
         "Project Description or Client Requirements",
@@ -520,111 +554,67 @@ with left_col:
         placeholder="Enter the client's project requirements, objectives, and specifications here..."
     )
 
-# RIGHT: Time & Cost Recommendations (separate from client requirements)
+# RIGHT: Suggestions and Autocomplete
 with right_col:
-    # Buttons for generating recommendations
-    col1, col2 = st.columns([1, 4])
+    if st.button("🔮 Generate Suggestions"):
+        try:
+            # Store the dictionary in session state
+            st.session_state.suggestion_details = get_recommendation(st.session_state.client_requirement, buyer, seller)
+            st.session_state.suggestions = list(st.session_state.suggestion_details.keys())
+            st.session_state.temp_suggestion = ""  # Reset selection
+        except Exception as e:
+            st.error(f"Error generating suggestions: {str(e)}")
     
-    with col1:
-        if st.button("Get Recommendation"):
-            if st.session_state.client_requirement.strip():
-                # Generate recommendation based on client requirements
-                st.session_state.time_cost_recommendation = get_time_cost_recommendations(
-                    st.session_state.client_requirement, buyer
-                )
-            else:
-                st.warning("Please enter client requirements first")
-    
-    with col2:
-        if st.button("🔄 Re-get"):
-            if st.session_state.client_requirement.strip():
-                # Re-generate recommendation
-                st.session_state.time_cost_recommendation = get_time_cost_recommendations(
-                    st.session_state.client_requirement, buyer
-                )
-            else:
-                st.warning("Please enter client requirements first")
-    
-    # Display recommendation in a separate box (not mixed with requirements)
-    if st.session_state.time_cost_recommendation:
-        st.subheader("📅💰 Time & Cost Recommendation")
+    # Display suggestions using streamlit components
+    for i, suggestion in enumerate(st.session_state.suggestions):
+        is_selected = suggestion == st.session_state.temp_suggestion
         
-        # Display the recommendation in a styled box
-        st.markdown(
-            f"""
-            <div style="
-                border: 2px solid #4CAF50;
-                padding: 15px;
-                border-radius: 10px;
-                background-color: #f9f9f9;
-                margin-top: 10px;
-            ">
-                <h4 style="color: #2E7D32; margin-top: 0;">Recommended Timeline & Budget</h4>
-                <div style="color: #333; line-height: 1.6;">
-                    {st.session_state.time_cost_recommendation}
-                </div>
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
+        col1, col2 = st.columns([1, 9])
         
-        # Optional: Add button to copy recommendation to proposal
-        if st.button("📋 Use This Recommendation", key="use_recommendation"):
-            st.success("Recommendation ready to be included in your proposal!")
-            # You can add logic here to pass this to your proposal generation
-
-# Session state for detailed breakdown
-if "detailed_breakdown" not in st.session_state:
-    st.session_state.detailed_breakdown = ""
-
-# BOTTOM: Detailed Module Breakdown (full width)
-st.subheader("🔧 Detailed Module Breakdown")
-
-# Button to generate breakdown
-col1, col2, col3 = st.columns([2, 2, 6])
-
-with col1:
-    if st.button("📊 Generate Breakdown"):
-        if st.session_state.client_requirement.strip() and st.session_state.time_cost_recommendation.strip():
-            # Generate detailed breakdown
-            st.session_state.detailed_breakdown = get_detailed_module_breakdown(
-                st.session_state.client_requirement,
-                st.session_state.time_cost_recommendation,
-                buyer
-            )
-        else:
-            st.warning("Please enter requirements and get recommendations first")
-
-with col2:
-    if st.button("🔄 Re-generate"):
-        if st.session_state.client_requirement.strip() and st.session_state.time_cost_recommendation.strip():
-            # Re-generate breakdown
-            st.session_state.detailed_breakdown = get_detailed_module_breakdown(
-                st.session_state.client_requirement,
-                st.session_state.time_cost_recommendation,
-                buyer
-            )
-        else:
-            st.warning("Please enter requirements and get recommendations first")
-
-# Display detailed breakdown
-if st.session_state.detailed_breakdown:
-    st.markdown(
-        f"""
-        <div style="
-            border: 2px solid #FF9800;
-            padding: 20px;
-            border-radius: 12px;
-            background-color: #fff8e1;
-            margin-top: 15px;
-        ">
-            <h4 style="color: #E65100; margin-top: 0;">📋 Project Module Breakdown & Cost Analysis</h4>
-            <div style="color: #333; line-height: 1.6; font-family: 'Courier New', monospace;">
-                {st.session_state.detailed_breakdown}
-
-        """,
-        unsafe_allow_html=True
-    )# Debug section
+        with col1:
+            if st.button("➕", key=f"add_{i}"):
+                # Get detailed description from session state dictionary
+                detailed_description = st.session_state.suggestion_details.get(suggestion, f"• {suggestion}")
+                
+                if st.session_state.client_requirement.strip():
+                    st.session_state.client_requirement += f"\n{detailed_description}"
+                else:
+                    st.session_state.client_requirement = detailed_description
+                st.session_state.temp_suggestion = suggestion
+                st.rerun()
+        
+        with col2:
+            # Use streamlit's info/success boxes for better display
+            if is_selected:
+                st.info(f"✅ {suggestion}")
+            else:
+                st.write(f"💡 {suggestion}")
+    
+    # Clear and Refresh buttons
+    if st.session_state.suggestions:
+        st.write("")  # Add some space
+        col1, col2 = st.columns([1, 1])
+        with col1:
+            if st.button("🗑️ Clear"):
+                st.session_state.suggestions = []
+                st.session_state.suggestion_details = {}
+                st.session_state.temp_suggestion = ""
+                st.rerun()
+        with col2:
+            if st.button("🔄 Refresh"):
+                try:
+                    # Generate new suggestions using the same function
+                    st.session_state.suggestion_details = get_recommendation(st.session_state.client_requirement, buyer, seller)
+                    st.session_state.suggestions = list(st.session_state.suggestion_details.keys())
+                    st.session_state.temp_suggestion = ""
+                    st.rerun()
+                except Exception as e:
+                    st.error(f"Error refreshing suggestions: {str(e)}")
+#------------------------------------------------------     
+# Project specification box  
+# 
+       
+    # Debug section
 if st.checkbox("Show debug info"):
     st.write("**Debug Information:**")
     

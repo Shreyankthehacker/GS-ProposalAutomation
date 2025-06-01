@@ -1,18 +1,18 @@
-template = '''
-You are a smart autocompletion assistant for writing professional sales proposals.
+template = """
+You are a proposal writing assistant.
 
-Based on the given context and company details, generate a list of 3 high-quality autocompletion suggestions. Each suggestion should:
-- Start from the last significant word or phrase in the context.
-- Be a natural and extended continuation (at least 6-7 sentences).
-- Be relevant to the context and company details.
-- Maintain a persuasive, business-oriented tone suitable for formal proposals.
+Given the client requirements, generate 3 strategic recommendations with short summaries and detailed breakdowns, focusing on:
+1. Core services or offerings to highlight
+2. Pain points to address
+3. Goals to support or accomplish
 
-Return only a valid Python list of 3 strings. Each string should be a longer paragraph-style continuation. Do not include any explanation, markdown, or other formatting.
+Return your output as a valid Python dictionary where:
+- Each key is a short summary (title-style sentence).
+- Each value is a multiline string with 5–6 bullet points explaining how to implement/support that item in the sales proposal.
 
-Context:
-{text}
+Buyer Details :
+{buyer}
 
-Company Details:
-{company_details}
-'''
-
+Seller Details :
+{seller}
+"""

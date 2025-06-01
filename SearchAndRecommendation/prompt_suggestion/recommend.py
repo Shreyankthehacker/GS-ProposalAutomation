@@ -3,11 +3,12 @@ from WebScraper.state import User
 from typing import Optional
 import json
 from SearchAndRecommendation.prompt_suggestion.chains import chain
+import ast 
 
 
 
-def get_recommendation(text:str , user : User ):
-    result = chain.invoke({"text":text , "company_details":user}) # returns list of 3 items 
+def get_recommendation(text:str , buyer : User ,seller : User):
+    result = chain.invoke({"text":text , "buyer":buyer,'seller':seller}) # returns list of 3 items 
     result = result.strip()
     if result.startswith('```python'):
         result = result[len('```python'):].strip()
@@ -15,8 +16,11 @@ def get_recommendation(text:str , user : User ):
         result = result[len('```'):].strip()
     if result.endswith('```'):
         result = result[:-3].strip()
+    
+    result = ast.literal_eval(result)
+    print(type(result))
 
-    return json.loads(result)
+    return result
  
 
 def get_detailed_module_breakdown(client_requirement, time_cost_recommendation, buyer_info):

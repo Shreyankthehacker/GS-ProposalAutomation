@@ -12,7 +12,7 @@ class WebSite(BaseModel):
 
 search_agent = Agent(
     model='gemini-2.0-flash-001',
-    name='root_agent',
+    name='url_agent',
     description = (
     "You are an intelligent assistant specialized in finding official and relevant websites "
     "associated with a given organization or company name. Your goal is to retrieve high-quality, "
