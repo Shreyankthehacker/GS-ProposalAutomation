@@ -1,10 +1,10 @@
 
-from SearchAndRecommendation.websiterecommendation.url_utils import get_urls
+
 import streamlit as st
 import asyncio
 import threading
 from concurrent.futures import ThreadPoolExecutor
-from SearchAndRecommendation.websiterecommendation.url_utils import get_urls
+from SearchAndRecommendation.url_recommendation.url_utils import get_urls
 from WebScraper.scrape import get_data
 from WebScraper.scrape_utils import extract_hex_colors
 
