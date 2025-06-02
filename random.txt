@@ -1,0 +1,4 @@
+if(root->right){
+        mini = minimum(abs(root->val-root->right->val),mini);
+        getMinimumDifference(root->right);
+     }
