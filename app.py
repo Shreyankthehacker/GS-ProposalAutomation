@@ -35,6 +35,7 @@ from concurrent.futures import ThreadPoolExecutor
 
 def get_urls_threaded(company_name):
     """Run async get_urls in a thread-safe way."""
+    print(f"fetching url")
     def run_in_thread():
         return asyncio.run(get_urls(company_name))
 
@@ -247,7 +248,7 @@ def create_company_section(section_name, section_key):
         display_scraped_data(st.session_state[f'{section_key}_scraped_data'], section_name)
             # 🎨 Display Color Palette
     try:
-        st.write("**🎨 Extracted Color Palette**")
+       # st.write("**🎨 Extracted Color Palette**")
         colors = extract_hex_colors(st.session_state[f'{section_key}_current_url'])  # Implement this function
         if colors:
             st.markdown("Here are the primary colors from the company website:")
@@ -259,7 +260,8 @@ def create_company_section(section_name, section_key):
                         unsafe_allow_html=True
                     )
         else:
-            st.info("No prominent colors detected from the website.")
+           # st.info("No prominent colors detected from the website.")
+           pass
     except Exception as e:
         st.warning(f"Could not extract color palette: {str(e)}")
 
