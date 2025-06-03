@@ -66,7 +66,8 @@ async def get_data(url:str):
             config = crawl_config)
     
     if result.success:
-        print(f"Successfully scraped : '\n\n\n {result.extracted_content}")
-        return json.loads(result.extracted_content)[-1]
+        print(f"Successfully scraped : '\n\n\n {result.extracted_content}")    
+        return json.loads(result.extracted_content)[-1]  # here instead of returning the last we may refine the one we need
+    
     else:
         print(f"The code exited with eroor {result.error_message}")

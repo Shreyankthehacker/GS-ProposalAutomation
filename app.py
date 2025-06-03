@@ -7,6 +7,7 @@ from concurrent.futures import ThreadPoolExecutor
 from SearchAndRecommendation.websiterecommendation.url_utils import get_urls
 from WebScraper.scrape import get_data
 from WebScraper.scrape_utils import extract_hex_colors
+from SearchAndRecommendation.prompt_suggestion.recommend import get_recommendation
 
 # ✅ Make app full-width
 st.set_page_config(layout="wide", page_title="Company Info Scraper")
@@ -35,6 +36,7 @@ from concurrent.futures import ThreadPoolExecutor
 
 def get_urls_threaded(company_name):
     """Run async get_urls in a thread-safe way."""
+    print(f"Company url is beingg fetched")
     def run_in_thread():
         return asyncio.run(get_urls(company_name))
 
@@ -158,8 +160,9 @@ def create_company_section(section_name, section_key):
         # Show loading spinner
         with st.spinner("Getting URL suggestions..."):
             try:
+                print(f"Company name is {company_name}")
                 # Use the threaded approach (most reliable)
-                suggested_urls = get_urls_cached(company_name)
+                suggested_urls = get_urls_threaded(company_name)
                 print(f"In frontend the suggested urls are",suggested_urls)
                 st.session_state[f'{section_key}_suggested_urls'] = suggested_urls
                 st.session_state[f'{section_key}_last_company'] = company_name
@@ -331,6 +334,67 @@ if st.session_state.get('seller_scraped_data') or st.session_state.get('buyer_sc
             st.write(f"**Services:** {len(buyer_data.get('services', []))} listed")
         else:
             st.info("No buyer data available")
+
+
+
+            #---------------------------------------------
+
+st.subheader("General Info")
+
+# Create two columns
+left_col, right_col = st.columns(2)
+
+# Session state for context and suggestions
+if "context_text" not in st.session_state:
+    st.session_state.context_text = ""
+if "suggestions" not in st.session_state:
+    st.session_state.suggestions = []
+
+# Handle suggestion addition first (before UI rendering)
+if "selected_suggestion" in st.session_state and st.session_state.selected_suggestion:
+    st.session_state.context_text += (
+        ("\n" if st.session_state.context_text else "") + st.session_state.selected_suggestion
+    )
+    del st.session_state.selected_suggestion  # Delete instead of setting to None
+
+# LEFT: Multiline text area for the problem statement
+with left_col:
+    st.session_state.context_text = st.text_area(
+        "Problem Statement or Context",
+        value=st.session_state.context_text,
+        height=250,
+        key="context_input"
+    )
+
+# RIGHT: Autocomplete + truncated suggestions with "+" buttons
+with right_col:
+    if st.button("Autocomplete"):
+        st.session_state.suggestions = get_recommendation(st.session_state.suggestions)
+    
+    for i, suggestion in enumerate(st.session_state.suggestions):
+        short_text = suggestion[:250] + "..." if len(suggestion) > 80 else suggestion
+        
+        col1, col2 = st.columns([1, 9])
+        with col1:
+            if st.button("➕", key=f"add_{i}"):
+                st.session_state.selected_suggestion = suggestion
+                st.rerun()  # Immediate rerun for faster response
+        with col2:
+            st.markdown(
+                f"""
+                <div style="
+                    border: 1px solid #ccc;
+                    padding: 10px;
+                    border-radius: 8px;
+                    font-size: 14px;
+                ">
+                    {short_text}
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+
+
 
 # Debug section
 if st.checkbox("Show debug info"):
