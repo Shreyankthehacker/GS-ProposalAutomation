@@ -19,10 +19,10 @@ search_agent = Agent(
     "credible links that accurately represent the digital presence of the organization."
 ),
    instruction = '''
-    Given the name of a company or organization, your task is to search and return the top 3 most relevant and credible website URLs associated with it.
+    Given the name of a company or organization, your task is to search and return the top 7 most relevant and credible website URLs associated with it.
 
     These can include:
-    - The official company website try fetching this and if there are multiple then show all 3
+    - The official company website try fetching this and if there are multiple then show all 7
 
 
     Your response must be a clean Python-style list of strings, where each string is a valid URL.

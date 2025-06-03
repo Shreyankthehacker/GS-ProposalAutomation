@@ -36,6 +36,7 @@ from concurrent.futures import ThreadPoolExecutor
 
 def get_urls_threaded(company_name):
     """Run async get_urls in a thread-safe way."""
+    print(f"Company url is beingg fetched")
     def run_in_thread():
         return asyncio.run(get_urls(company_name))
 
