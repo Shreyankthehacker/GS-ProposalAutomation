@@ -53,7 +53,8 @@ search_agent = Agent(
 
     ----
 
-    VERY IMPORTANT : TEMPERATURE OF THE MODEL BE ZEROOOO
+    VERY IMPORTANT : TEMPERATURE OF THE MODEL BE ZEROOOO AND remember dont give me like the links of youtube or linkedin or any other platforms
+    THE LINK SHOULD BE OFFICIAL LINK OF THE ORGANIZATION
     ''',
 
     tools = [google_search],

@@ -1,10 +1,10 @@
 
-
+from SearchAndRecommendation.url_recommendation.url_utils import get_urls_from_company_name
 import streamlit as st
 import asyncio
 import threading
 from concurrent.futures import ThreadPoolExecutor
-from SearchAndRecommendation.url_recommendation.url_utils import get_urls
+from SearchAndRecommendation.url_recommendation.url_utils import get_urls_from_company_name
 from WebScraper.scrape import get_data
 from WebScraper.scrape_utils import extract_hex_colors
 
@@ -29,39 +29,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# SOLUTION 2: Thread-based approach (most reliable for Streamlit)
-import asyncio
-from concurrent.futures import ThreadPoolExecutor
 
-def get_urls_threaded(company_name):
-    """Run async get_urls in a thread-safe way."""
-    print(f"fetching url")
-    def run_in_thread():
-        return asyncio.run(get_urls(company_name))
-
-    with ThreadPoolExecutor() as executor:
-        future = executor.submit(run_in_thread)
-        result = future.result()
-        print(f"This is within the function{result}")
-        return result
-
-
-# SOLUTION 3: Using st.cache_data for performance
-@st.cache_data
-def get_urls_cached(company_name):
-    """Cached version using threading approach"""
-    return get_urls_threaded(company_name)
-
-# SCRAPING FUNCTION - Replace with your actual scraping implementation
-def scrape_website_info(url):
-        def run_in_thread():
-            return asyncio.run(get_data(url))
-
-        with ThreadPoolExecutor() as executor:
-            future = executor.submit(run_in_thread)
-            result = future.result()
-            print(result)
-            return result
 
 
 
@@ -134,8 +102,6 @@ def create_company_section(section_name, section_key):
         st.session_state[f'{section_key}_company_name'] = ""
     if f'{section_key}_is_fetching' not in st.session_state:
         st.session_state[f'{section_key}_is_fetching'] = False
-    if f'{section_key}_user_typed' not in st.session_state:
-        st.session_state[f'{section_key}_user_typed'] = False
     
     # Company name input - preserve value during fetching
     company_name = st.text_input(
@@ -161,13 +127,12 @@ def create_company_section(section_name, section_key):
         # Show loading spinner
         with st.spinner("Getting URL suggestions..."):
             try:
+                print(f"Company name is {company_name}")
                 # Use the threaded approach (most reliable)
-                suggested_urls = get_urls_cached(company_name)
+                suggested_urls =asyncio.run(get_urls_from_company_name(company_name))
                 print(f"In frontend the suggested urls are",suggested_urls)
                 st.session_state[f'{section_key}_suggested_urls'] = suggested_urls
                 st.session_state[f'{section_key}_last_company'] = company_name
-                # Reset user_typed flag when new URLs are fetched
-                st.session_state[f'{section_key}_user_typed'] = False
                 st.success("URLs fetched successfully!")
             except Exception as e:
                 st.error(f"Error fetching URLs: {str(e)}")
@@ -180,10 +145,8 @@ def create_company_section(section_name, section_key):
     # URL input section
     st.write("**Company Website**")
     
-    # Show dropdown only if we have suggested URLs and user hasn't started typing
-    if (st.session_state[f'{section_key}_suggested_urls'] and 
-        not st.session_state[f'{section_key}_user_typed']):
-        
+    # Show dropdown if we have suggested URLs
+    if st.session_state[f'{section_key}_suggested_urls']:
         st.write("**Select from suggested URLs:**")
         
         # Create dropdown options
@@ -209,10 +172,10 @@ def create_company_section(section_name, section_key):
         key=f"{section_key}_url_input"
     )
     
-    # Check if user has started typing (detect manual input)
+    # Update session state when text input changes
     if final_url != st.session_state[f'{section_key}_current_url']:
-        st.session_state[f'{section_key}_user_typed'] = True
         st.session_state[f'{section_key}_current_url'] = final_url
+    
     # Display final URL and scraping section
     if final_url:
         st.markdown(f"🔗 Final Website URL: [{final_url}]({final_url})")
@@ -233,7 +196,7 @@ def create_company_section(section_name, section_key):
                     with st.spinner(f"Scraping {section_name} website data..."):
                         try:
                             # Pass the confirmed URL to scraping function
-                            scraped_data = scrape_website_info(final_url)
+                            scraped_data = asyncio.run(get_data(final_url))
                             st.session_state[f'{section_key}_scraped_data'] = scraped_data
                             st.rerun()
                         except Exception as e:
@@ -254,7 +217,7 @@ def create_company_section(section_name, section_key):
         display_scraped_data(st.session_state[f'{section_key}_scraped_data'], section_name)
             # 🎨 Display Color Palette
     try:
-       # st.write("**🎨 Extracted Color Palette**")
+        st.write("**🎨 Extracted Color Palette**")
         colors = extract_hex_colors(st.session_state[f'{section_key}_current_url'])  # Implement this function
         if colors:
             st.markdown("Here are the primary colors from the company website:")
@@ -266,8 +229,7 @@ def create_company_section(section_name, section_key):
                         unsafe_allow_html=True
                     )
         else:
-           # st.info("No prominent colors detected from the website.")
-           pass
+            st.info("No prominent colors detected from the website.")
     except Exception as e:
         st.warning(f"Could not extract color palette: {str(e)}")
 
@@ -280,8 +242,8 @@ def create_company_section(section_name, section_key):
                 with st.spinner("Fetching fresh suggestions..."):
                     try:
                         # Clear cache and fetch new results
-                        get_urls_cached.clear()
-                        urls = get_urls_cached(company_name)
+                        #get_urls_from_company_name_cached.clear()
+                        urls = get_urls_from_company_name(company_name)
                         st.session_state[f'{section_key}_suggested_urls'] = urls
                         st.session_state[f'{section_key}_last_company'] = company_name
                         st.success("Fresh suggestions loaded!")
