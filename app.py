@@ -1,10 +1,10 @@
 
-from SearchAndRecommendation.websiterecommendation.url_utils import get_urls
+from SearchAndRecommendation.url_recommendation.url_utils import get_urls_from_company_name
 import streamlit as st
 import asyncio
 import threading
 from concurrent.futures import ThreadPoolExecutor
-from SearchAndRecommendation.websiterecommendation.url_utils import get_urls
+from SearchAndRecommendation.url_recommendation.url_utils import get_urls_from_company_name
 from WebScraper.scrape import get_data
 from WebScraper.scrape_utils import extract_hex_colors
 
@@ -29,38 +29,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# SOLUTION 2: Thread-based approach (most reliable for Streamlit)
-import asyncio
-from concurrent.futures import ThreadPoolExecutor
 
-def get_urls_threaded(company_name):
-    """Run async get_urls in a thread-safe way."""
-    def run_in_thread():
-        return asyncio.run(get_urls(company_name))
-
-    with ThreadPoolExecutor() as executor:
-        future = executor.submit(run_in_thread)
-        result = future.result()
-        print(result)
-        return result
-
-
-# SOLUTION 3: Using st.cache_data for performance
-@st.cache_data
-def get_urls_cached(company_name):
-    """Cached version using threading approach"""
-    return get_urls_threaded(company_name)
-
-# SCRAPING FUNCTION - Replace with your actual scraping implementation
-def scrape_website_info(url):
-        def run_in_thread():
-            return asyncio.run(get_data(url))
-
-        with ThreadPoolExecutor() as executor:
-            future = executor.submit(run_in_thread)
-            result = future.result()
-            print(result)
-            return result
 
 
 
@@ -158,8 +127,9 @@ def create_company_section(section_name, section_key):
         # Show loading spinner
         with st.spinner("Getting URL suggestions..."):
             try:
+                print(f"Company name is {company_name}")
                 # Use the threaded approach (most reliable)
-                suggested_urls = get_urls_cached(company_name)
+                suggested_urls =asyncio.run(get_urls_from_company_name(company_name))
                 print(f"In frontend the suggested urls are",suggested_urls)
                 st.session_state[f'{section_key}_suggested_urls'] = suggested_urls
                 st.session_state[f'{section_key}_last_company'] = company_name
@@ -226,7 +196,7 @@ def create_company_section(section_name, section_key):
                     with st.spinner(f"Scraping {section_name} website data..."):
                         try:
                             # Pass the confirmed URL to scraping function
-                            scraped_data = scrape_website_info(final_url)
+                            scraped_data = asyncio.run(get_data(final_url))
                             st.session_state[f'{section_key}_scraped_data'] = scraped_data
                             st.rerun()
                         except Exception as e:
@@ -272,8 +242,8 @@ def create_company_section(section_name, section_key):
                 with st.spinner("Fetching fresh suggestions..."):
                     try:
                         # Clear cache and fetch new results
-                        get_urls_cached.clear()
-                        urls = get_urls_cached(company_name)
+                        #get_urls_from_company_name_cached.clear()
+                        urls = get_urls_from_company_name(company_name)
                         st.session_state[f'{section_key}_suggested_urls'] = urls
                         st.session_state[f'{section_key}_last_company'] = company_name
                         st.success("Fresh suggestions loaded!")

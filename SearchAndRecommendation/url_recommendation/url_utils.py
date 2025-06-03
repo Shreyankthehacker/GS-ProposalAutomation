@@ -1,4 +1,4 @@
-from SearchAndRecommendation.websiterecommendation.agent import search_agent 
+from SearchAndRecommendation.url_recommendation.agent import search_agent 
 from google.adk.sessions import InMemorySessionService
 from google.adk.runners import Runner
 from google.genai import types
@@ -35,7 +35,7 @@ def extract_list_from_string(s):
 
 
 import json
-async def get_urls(company_name: str, runner=runner, user_id=USER_ID, session_id=SESSION_ID):
+async def get_urls_from_company_name(company_name: str, runner=runner, user_id=USER_ID, session_id=SESSION_ID):
     content = types.Content(role='user', parts=[types.Part(text=company_name)])
     final_msg = ""
     
