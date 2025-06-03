@@ -52,6 +52,8 @@ search_agent = Agent(
     ]
 
     ----
+
+    VERY IMPORTANT : TEMPERATURE OF THE MODEL BE ZEROOOO
     ''',
 
     tools = [google_search],

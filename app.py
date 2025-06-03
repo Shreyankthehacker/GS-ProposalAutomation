@@ -42,7 +42,7 @@ def get_urls_threaded(company_name):
     with ThreadPoolExecutor() as executor:
         future = executor.submit(run_in_thread)
         result = future.result()
-        print(result)
+        print(f"This is within the function{result}")
         return result
 
 
@@ -134,6 +134,8 @@ def create_company_section(section_name, section_key):
         st.session_state[f'{section_key}_company_name'] = ""
     if f'{section_key}_is_fetching' not in st.session_state:
         st.session_state[f'{section_key}_is_fetching'] = False
+    if f'{section_key}_user_typed' not in st.session_state:
+        st.session_state[f'{section_key}_user_typed'] = False
     
     # Company name input - preserve value during fetching
     company_name = st.text_input(
@@ -164,6 +166,8 @@ def create_company_section(section_name, section_key):
                 print(f"In frontend the suggested urls are",suggested_urls)
                 st.session_state[f'{section_key}_suggested_urls'] = suggested_urls
                 st.session_state[f'{section_key}_last_company'] = company_name
+                # Reset user_typed flag when new URLs are fetched
+                st.session_state[f'{section_key}_user_typed'] = False
                 st.success("URLs fetched successfully!")
             except Exception as e:
                 st.error(f"Error fetching URLs: {str(e)}")
@@ -176,8 +180,10 @@ def create_company_section(section_name, section_key):
     # URL input section
     st.write("**Company Website**")
     
-    # Show dropdown if we have suggested URLs
-    if st.session_state[f'{section_key}_suggested_urls']:
+    # Show dropdown only if we have suggested URLs and user hasn't started typing
+    if (st.session_state[f'{section_key}_suggested_urls'] and 
+        not st.session_state[f'{section_key}_user_typed']):
+        
         st.write("**Select from suggested URLs:**")
         
         # Create dropdown options
@@ -203,10 +209,10 @@ def create_company_section(section_name, section_key):
         key=f"{section_key}_url_input"
     )
     
-    # Update session state when text input changes
+    # Check if user has started typing (detect manual input)
     if final_url != st.session_state[f'{section_key}_current_url']:
+        st.session_state[f'{section_key}_user_typed'] = True
         st.session_state[f'{section_key}_current_url'] = final_url
-    
     # Display final URL and scraping section
     if final_url:
         st.markdown(f"🔗 Final Website URL: [{final_url}]({final_url})")
