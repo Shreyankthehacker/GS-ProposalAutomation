@@ -58,6 +58,32 @@ crawl_config = CrawlerRunConfig(
 
 browser_cfg = BrowserConfig(headless=True)
 
+import re 
+
+def aggregate_users(users: List[User]) -> User:
+    if not users:
+        raise ValueError("User list is empty")
+
+    # Pick any name — first is fine
+    name = users[0]['name']
+
+    # Find the first logo URL that contains "logo" in it
+    logo = next((u['logo'] for u in users if re.search(r'logo', u['logo'], re.IGNORECASE)), None)
+
+    # Get the longest description
+    description = max((u['description'] for u in users), key=len, default="")
+
+    # Combine all services, remove duplicates
+    combined_services = list({service for user in users for service in user['services']})
+
+    return User(
+        name=name,
+        logo=logo,
+        description=description,
+        services=combined_services
+    )
+
+
 async def get_data(url:str):
 
     async with AsyncWebCrawler(config= browser_cfg) as crawler:
@@ -67,7 +93,11 @@ async def get_data(url:str):
     
     if result.success:
         print(f"Successfully scraped : '\n\n\n {result.extracted_content}")    
-        return json.loads(result.extracted_content)[-1]  # here instead of returning the last we may refine the one we need
+        lists = json.loads(result.extracted_content)  # here instead of returning the last we may refine the one we need
+        print(lists)
+        print(aggregate_users(lists))
+        return aggregate_users(lists)
     
     else:
         print(f"The code exited with eroor {result.error_message}")
+

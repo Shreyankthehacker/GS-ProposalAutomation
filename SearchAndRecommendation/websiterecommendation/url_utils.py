@@ -45,6 +45,17 @@ async def get_urls(company_name: str, runner=runner, user_id=USER_ID, session_id
                 final_msg = event.content.parts[0].text
             elif event.actions and event.actions.escalate:
                 final_msg = event.error_message
-    print(f"In backend {json.loads(final_msg)}")
+    result = final_msg
+    result = result.strip()
+    if result.startswith('```python'):
+        result = result[len('```python'):].strip()
+    elif result.startswith('```json'):
+        result = result[len('```json'):].strip()
+    elif result.startswith('```'):
+        result = result[len('```'):].strip()
+    if result.endswith('```'):
+        result = result[:-3].strip()
+    final_msg = result
+    print(final_msg)
     return json.loads(final_msg)
 
