@@ -88,7 +88,7 @@ async def get_data(url:str):
     if result.success:
         print(f"Successfully scraped : '\n\n\n {result.extracted_content}")    
         lists = json.loads(result.extracted_content)  # here instead of returning the last we may refine the one we need
-        print(lists)
+        #print(lists)
         print(aggregate_users(lists))
         return aggregate_users(lists)
     
