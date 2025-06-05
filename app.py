@@ -6,7 +6,7 @@ from concurrent.futures import ThreadPoolExecutor
 from SearchAndRecommendation.websiterecommendation.url_utils import get_urls
 from WebScraper.scrape import get_data
 from WebScraper.scrape_utils import extract_hex_colors
-from SearchAndRecommendation.prompt_suggestion.recommend import get_recommendation
+from SearchAndRecommendation.prompt_suggestion.recommend import get_recommendation,get_detailed_module_breakdown
 
 
 from WebScraper.state import User
@@ -504,74 +504,127 @@ st.subheader("Client Requirement")
 # Create two columns
 left_col, right_col = st.columns(2)
 
-# Session state for context and recommendation
-if "context_text" not in st.session_state:
-    st.session_state.context_text = ""
+# Session state for client requirement and recommendation (kept separate)
+if "client_requirement" not in st.session_state:
+    st.session_state.client_requirement = ""
 if "time_cost_recommendation" not in st.session_state:
     st.session_state.time_cost_recommendation = ""
 
-# Handle recommendation addition (before UI rendering)
-if "selected_recommendation" in st.session_state and st.session_state.selected_recommendation:
-    st.session_state.context_text += (
-        ("\n" if st.session_state.context_text else "") + st.session_state.selected_recommendation
-    )
-    del st.session_state.selected_recommendation
-
-# LEFT: Multiline text area for the problem statement
+# LEFT: Client requirement input only
 with left_col:
-    st.session_state.context_text = st.text_area(
-        "Project Description or Context",
-        value=st.session_state.context_text,
+    st.session_state.client_requirement = st.text_area(
+        "Project Description or Client Requirements",
+        value=st.session_state.client_requirement,
         height=250,
-        key="context_input"
+        key="client_req_input",
+        placeholder="Enter the client's project requirements, objectives, and specifications here..."
     )
 
-# RIGHT: Time & Cost Recommendations
+# RIGHT: Time & Cost Recommendations (separate from client requirements)
 with right_col:
+    # Buttons for generating recommendations
     col1, col2 = st.columns([1, 4])
     
     with col1:
         if st.button("Get Recommendation"):
-            # Generate single recommendation string for timeline and budget
-            st.session_state.time_cost_recommendation = get_time_cost_recommendations(
-                st.session_state.context_text, buyer
-            )
+            if st.session_state.client_requirement.strip():
+                # Generate recommendation based on client requirements
+                st.session_state.time_cost_recommendation = get_time_cost_recommendations(
+                    st.session_state.client_requirement, buyer
+                )
+            else:
+                st.warning("Please enter client requirements first")
     
     with col2:
         if st.button("🔄 Re-get"):
-            # Re-generate recommendation
-            st.session_state.time_cost_recommendation = get_time_cost_recommendations(
-                st.session_state.context_text, buyer
-            )
+            if st.session_state.client_requirement.strip():
+                # Re-generate recommendation
+                st.session_state.time_cost_recommendation = get_time_cost_recommendations(
+                    st.session_state.client_requirement, buyer
+                )
+            else:
+                st.warning("Please enter client requirements first")
     
-    # Display recommendation if available
+    # Display recommendation in a separate box (not mixed with requirements)
     if st.session_state.time_cost_recommendation:
         st.subheader("📅💰 Time & Cost Recommendation")
         
-        col1, col2 = st.columns([1, 9])
-        
-        with col1:
-            if st.button("➕", key="add_recommendation"):
-                # Directly add to context
-                st.session_state.selected_recommendation = st.session_state.time_cost_recommendation
-                st.rerun()
-        
-        with col2:
-            # Display the recommendation string without colors
-            st.markdown(
-                f"""
-                <div style="
-                    border: 1px solid #ccc;
-                    padding: 12px;
-                    border-radius: 8px;
-                ">
+        # Display the recommendation in a styled box
+        st.markdown(
+            f"""
+            <div style="
+                border: 2px solid #4CAF50;
+                padding: 15px;
+                border-radius: 10px;
+                background-color: #f9f9f9;
+                margin-top: 10px;
+            ">
+                <h4 style="color: #2E7D32; margin-top: 0;">Recommended Timeline & Budget</h4>
+                <div style="color: #333; line-height: 1.6;">
                     {st.session_state.time_cost_recommendation}
                 </div>
-                """,
-                unsafe_allow_html=True
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+        
+        # Optional: Add button to copy recommendation to proposal
+        if st.button("📋 Use This Recommendation", key="use_recommendation"):
+            st.success("Recommendation ready to be included in your proposal!")
+            # You can add logic here to pass this to your proposal generation
+
+# Session state for detailed breakdown
+if "detailed_breakdown" not in st.session_state:
+    st.session_state.detailed_breakdown = ""
+
+# BOTTOM: Detailed Module Breakdown (full width)
+st.subheader("🔧 Detailed Module Breakdown")
+
+# Button to generate breakdown
+col1, col2, col3 = st.columns([2, 2, 6])
+
+with col1:
+    if st.button("📊 Generate Breakdown"):
+        if st.session_state.client_requirement.strip() and st.session_state.time_cost_recommendation.strip():
+            # Generate detailed breakdown
+            st.session_state.detailed_breakdown = get_detailed_module_breakdown(
+                st.session_state.client_requirement,
+                st.session_state.time_cost_recommendation,
+                buyer
             )
-            
-# Debug section
+        else:
+            st.warning("Please enter requirements and get recommendations first")
+
+with col2:
+    if st.button("🔄 Re-generate"):
+        if st.session_state.client_requirement.strip() and st.session_state.time_cost_recommendation.strip():
+            # Re-generate breakdown
+            st.session_state.detailed_breakdown = get_detailed_module_breakdown(
+                st.session_state.client_requirement,
+                st.session_state.time_cost_recommendation,
+                buyer
+            )
+        else:
+            st.warning("Please enter requirements and get recommendations first")
+
+# Display detailed breakdown
+if st.session_state.detailed_breakdown:
+    st.markdown(
+        f"""
+        <div style="
+            border: 2px solid #FF9800;
+            padding: 20px;
+            border-radius: 12px;
+            background-color: #fff8e1;
+            margin-top: 15px;
+        ">
+            <h4 style="color: #E65100; margin-top: 0;">📋 Project Module Breakdown & Cost Analysis</h4>
+            <div style="color: #333; line-height: 1.6; font-family: 'Courier New', monospace;">
+                {st.session_state.detailed_breakdown}
+
+        """,
+        unsafe_allow_html=True
+    )# Debug section
 if st.checkbox("Show debug info"):
     st.write("**Debug Information:**")
     
