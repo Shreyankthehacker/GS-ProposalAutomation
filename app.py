@@ -526,9 +526,6 @@ st.divider()
 #             st.info("No buyer data available")
 
 #---------------------------------------------
-
-
-
 st.subheader("Client Requirement")
 
 # Create two columns
@@ -543,6 +540,10 @@ if "suggestion_details" not in st.session_state:
     st.session_state.suggestion_details = {}
 if "temp_suggestion" not in st.session_state:
     st.session_state.temp_suggestion = ""
+if "suggestions_generated" not in st.session_state:
+    st.session_state.suggestions_generated = False
+if "added_suggestions" not in st.session_state:
+    st.session_state.added_suggestions = set()  # Track added suggestions
 
 # LEFT: Text area for client requirements
 with left_col:
@@ -558,40 +559,56 @@ with left_col:
 with right_col:
     if st.button("🔮 Generate Suggestions"):
         try:
-            # Store the dictionary in session state
-            st.session_state.suggestion_details = get_recommendation(st.session_state.client_requirement, buyer, seller)
-            st.session_state.suggestions = list(st.session_state.suggestion_details.keys())
-            st.session_state.temp_suggestion = ""  # Reset selection
+            with st.spinner("Generating suggestions..."):
+                # Store the dictionary in session state
+                st.session_state.suggestion_details = get_recommendation(
+                    st.session_state.client_requirement, buyer, seller
+                )
+                st.session_state.suggestions = list(st.session_state.suggestion_details.keys())
+                st.session_state.temp_suggestion = ""  # Reset selection
+                st.session_state.suggestions_generated = True
+                st.session_state.added_suggestions = set()  # Reset added suggestions
+                st.success("Suggestions generated successfully!")
         except Exception as e:
             st.error(f"Error generating suggestions: {str(e)}")
     
-    # Display suggestions using streamlit components
-    for i, suggestion in enumerate(st.session_state.suggestions):
-        is_selected = suggestion == st.session_state.temp_suggestion
-        
-        col1, col2 = st.columns([1, 9])
-        
-        with col1:
-            if st.button("➕", key=f"add_{i}"):
-                # Get detailed description from session state dictionary
-                detailed_description = st.session_state.suggestion_details.get(suggestion, f"• {suggestion}")
-                
-                if st.session_state.client_requirement.strip():
-                    st.session_state.client_requirement += f"\n{detailed_description}"
+    # Only display suggestions if they have been generated
+    if st.session_state.suggestions_generated and st.session_state.suggestions:
+        # Display suggestions using streamlit components
+        for i, suggestion in enumerate(st.session_state.suggestions):
+            is_added = suggestion in st.session_state.added_suggestions
+            
+            col1, col2 = st.columns([1, 9])
+            
+            with col1:
+                # Change button appearance based on whether it's already added
+                if is_added:
+                    st.button("✅", key=f"added_{i}", disabled=True, help="Already added")
                 else:
-                    st.session_state.client_requirement = detailed_description
-                st.session_state.temp_suggestion = suggestion
-                st.rerun()
+                    if st.button("➕", key=f"add_{i}", help="Add to requirements"):
+                        # Get detailed description from session state dictionary
+                        detailed_description = st.session_state.suggestion_details.get(
+                            suggestion, f"• {suggestion}"
+                        )
+                        
+                        if st.session_state.client_requirement.strip():
+                            st.session_state.client_requirement += f"\n{detailed_description}"
+                        else:
+                            st.session_state.client_requirement = detailed_description
+                        
+                        # Mark this suggestion as added
+                        st.session_state.added_suggestions.add(suggestion)
+                        st.session_state.temp_suggestion = suggestion
+                        st.rerun()
+            
+            with col2:
+                # Use different styling for added suggestions
+                if is_added:
+                    st.success(f"✅ {suggestion} (Added)")
+                else:
+                    st.write(f"💡 {suggestion}")
         
-        with col2:
-            # Use streamlit's info/success boxes for better display
-            if is_selected:
-                st.info(f"✅ {suggestion}")
-            else:
-                st.write(f"💡 {suggestion}")
-    
-    # Clear and Refresh buttons
-    if st.session_state.suggestions:
+        # Clear and Refresh buttons
         st.write("")  # Add some space
         col1, col2 = st.columns([1, 1])
         with col1:
@@ -599,22 +616,32 @@ with right_col:
                 st.session_state.suggestions = []
                 st.session_state.suggestion_details = {}
                 st.session_state.temp_suggestion = ""
+                st.session_state.suggestions_generated = False
+                st.session_state.added_suggestions = set()  # Clear added suggestions
                 st.rerun()
         with col2:
             if st.button("🔄 Refresh"):
                 try:
-                    # Generate new suggestions using the same function
-                    st.session_state.suggestion_details = get_recommendation(st.session_state.client_requirement, buyer, seller)
-                    st.session_state.suggestions = list(st.session_state.suggestion_details.keys())
-                    st.session_state.temp_suggestion = ""
-                    st.rerun()
+                    with st.spinner("Refreshing suggestions..."):
+                        # Generate new suggestions using the same function
+                        st.session_state.suggestion_details = get_recommendation(
+                            st.session_state.client_requirement, buyer, seller
+                        )
+                        st.session_state.suggestions = list(st.session_state.suggestion_details.keys())
+                        st.session_state.temp_suggestion = ""
+                        st.session_state.added_suggestions = set()  # Reset added suggestions
+                        st.success("Suggestions refreshed!")
+                        st.rerun()
                 except Exception as e:
                     st.error(f"Error refreshing suggestions: {str(e)}")
-
-#------------------------------------------------------     
+    
+    elif st.session_state.suggestions_generated and not st.session_state.suggestions:
+        st.warning("No suggestions found. Try modifying your requirements or check if buyer/seller data is available.")
+    
+    elif not st.session_state.suggestions_generated:
+        st.info("👆 Click 'Generate Suggestions' to get AI-powered recommendations for your project requirements.")
+#------------------------------------------------------
 # Project specification box  
-
-# Initialize session state for the selected text
 # Initialize session state for the selected text
 if 'selected_text' not in st.session_state:
     st.session_state.selected_text = ""
@@ -625,8 +652,8 @@ if 'timeline_suggestions' not in st.session_state:
 
 st.title("Project specifications")
 
-# Create two columns - left for selection box, right for suggestions
-col1, col2 = st.columns([2, 3])
+# Create two columns with equal width - left for selection box, right for suggestions
+col1, col2 = st.columns([1, 1])
 
 with col1:
     st.subheader("Selected Item")
@@ -634,25 +661,34 @@ with col1:
     selected_display = st.text_area(
         label="Current Selection:",
         value=st.session_state.selected_text,
-        height=150,
+        height=250,
         disabled=True,
         key="selection_display"
     )
 
 with col2:
-    # Button to generate timeline suggestions
-    if st.button("🔮 Get Timeline Suggestions"):
-        try:
-            with st.spinner("Generating timeline suggestions..."):
-                # Only call the function when button is clicked
-                st.session_state.timeline_suggestions = get_project_specification(
-                    st.session_state.client_requirement, 
-                    buyer, 
-                    seller
-                )
-                st.success("Timeline suggestions generated!")
-        except Exception as e:
-            st.error(f"Error generating suggestions: {str(e)}")
+    st.subheader("")  # Empty subheader to match the vertical spacing of col1
+    
+    # Center the button
+    _, center_col, _ = st.columns([1, 2, 1])
+    with center_col:
+        # Button to generate timeline suggestions
+        if st.button("🔮 Get Timeline Suggestions"):
+            try:
+                with st.spinner("Generating timeline suggestions..."):
+                    # Only call the function when button is clicked
+                    st.session_state.timeline_suggestions = get_project_specification(
+                        st.session_state.client_requirement, 
+                        buyer, 
+                        seller
+                    )
+                    st.success("Timeline suggestions generated!")
+            except Exception as e:
+                st.error(f"Error generating suggestions: {str(e)}")
+    
+    # Show notification right under the button
+    if not st.session_state.timeline_suggestions:
+        st.info("👆 Click 'Get Timeline Suggestions' to generate project specifications based on your requirements.")
     
     # Only show suggestions if they exist
     if st.session_state.timeline_suggestions:
@@ -696,21 +732,24 @@ if st.session_state.timeline_suggestions:
     # Add some spacing
     st.markdown("---")
     
-    # Create columns for action buttons
-    button_col1, button_col2 = st.columns([1, 1])
-    
-    with button_col1:
-        # Clear selection button
-        if st.button("🗑️ Clear Selection", help="Clear the current selection"):
-            st.session_state.selected_text = ""
-            st.rerun()
-    
-    with button_col2:
-        # Clear all suggestions button
-        if st.button("🗑️ Clear All Suggestions", help="Clear all timeline suggestions"):
-            st.session_state.timeline_suggestions = {}
-            st.session_state.selected_text = ""
-            st.rerun()
+    # Center the action buttons
+    _, center_col, _ = st.columns([1, 2, 1])
+    with center_col:
+        # Create columns for action buttons
+        button_col1, button_col2 = st.columns([1, 1])
+        
+        with button_col1:
+            # Clear selection button
+            if st.button("🗑️ Clear Selection", help="Clear the current selection"):
+                st.session_state.selected_text = ""
+                st.rerun()
+        
+        with button_col2:
+            # Clear all suggestions button
+            if st.button("🗑️ Clear All Suggestions", help="Clear all timeline suggestions"):
+                st.session_state.timeline_suggestions = {}
+                st.session_state.selected_text = ""
+                st.rerun()
 
     # Display current selection status
     if st.session_state.selected_text:
@@ -721,8 +760,7 @@ if st.session_state.timeline_suggestions:
     else:
         st.info("No item selected. Click a ➕ button to select an option.")
 
-elif not st.session_state.timeline_suggestions:
-    st.info("👆 Click 'Get Timeline Suggestions' to generate project specifications based on your requirements.")
+
 if st.checkbox("Show debug info"):
     st.write("**Debug Information:**")
     
