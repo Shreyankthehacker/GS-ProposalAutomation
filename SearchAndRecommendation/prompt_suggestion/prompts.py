@@ -45,7 +45,7 @@ Each must include:
 Return the result as a **Python dictionary** formatted exactly like:
 
 ```python
-{
+{{
   "5 days 3000$ and team of 20 people": """ 
   • Phase 1: Planning (1 day)
     - Team: 2 Project Managers
@@ -75,5 +75,5 @@ Return the result as a **Python dictionary** formatted exactly like:
   "15 days 6000$ and team of 6 people": """ 
   • Phase 1: ...
   """
-}
+}}
 '''
