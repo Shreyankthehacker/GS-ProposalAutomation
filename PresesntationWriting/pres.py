@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Enhanced Presentation Generator with PDF Support and Customizable Colors
+Enhanced Presentation Generator with Custom Colors and Design Elements
 """
 
 import re
@@ -10,13 +10,22 @@ from typing import Dict, List, Optional, Tuple
 class PresentationConfig:
     """Configuration class for presentation styling"""
     
-    def __init__(self):
-        # Color scheme
-        self.primary_color = "#3498db"
-        self.secondary_color = "#2c3e50"
-        self.accent_color = "#e74c3c"
-        self.success_color = "#27ae60"
-        self.warning_color = "#f39c12"
+    def __init__(self, colors: List[str] = None):
+        # Use provided colors or defaults
+        if colors and len(colors) >= 4:
+            self.primary_color = colors[0]
+            self.secondary_color = colors[1] 
+            self.accent_color = colors[2]
+            self.success_color = colors[3]
+            self.warning_color = colors[4] if len(colors) > 4 else colors[2]
+        else:
+            # Default colors
+            self.primary_color = "#3498db"
+            self.secondary_color = "#2c3e50"
+            self.accent_color = "#e74c3c"
+            self.success_color = "#27ae60"
+            self.warning_color = "#f39c12"
+            
         self.background_color = "#f8f9fa"
         self.text_color = "#333"
         self.light_text_color = "#666"
@@ -37,12 +46,6 @@ class PresentationConfig:
         self.page_margin = "20mm"
         self.page_size = "A4"
     
-    def update_colors(self, **colors):
-        """Update color scheme"""
-        for key, value in colors.items():
-            if hasattr(self, key):
-                setattr(self, key, value)
-    
     def get_css(self, logo_url: str) -> str:
         """Generate CSS with current configuration"""
         return f"""
@@ -55,6 +58,21 @@ class PresentationConfig:
         @page {{
             size: {self.page_size};
             margin: {self.page_margin};
+            @top-left {{
+                content: "";
+                background: url('{logo_url}') no-repeat;
+                background-size: contain;
+                width: 120px;
+                height: 60px;
+                margin: 10px;
+            }}
+            @bottom-center {{
+                content: "";
+                height: 60px;
+                background: linear-gradient(135deg, {self.primary_color} 0%, {self.secondary_color} 30%, {self.accent_color} 60%, {self.success_color} 100%);
+                width: 100%;
+                border-radius: 30px 30px 0 0;
+            }}
         }}
 
         body {{
@@ -64,15 +82,40 @@ class PresentationConfig:
             background: {self.background_color};
             -webkit-print-color-adjust: exact;
             print-color-adjust: exact;
+            position: relative;
+            min-height: 100vh;
+        }}
+
+        .page-logo {{
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 120px;
+            height: 60px;
+            background: url('{logo_url}') no-repeat center;
+            background-size: contain;
+            z-index: 1000;
+        }}
+
+        .page-footer-design {{
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: linear-gradient(135deg, {self.primary_color} 0%, {self.secondary_color} 30%, {self.accent_color} 60%, {self.success_color} 100%);
+            border-radius: 30px 30px 0 0;
+            z-index: 999;
         }}
 
         .presentation-container {{
             max-width: {self.container_width};
             margin: 0 auto;
-            padding: 20px;
+            padding: 100px 20px 80px 20px;
             background: white;
             box-shadow: {self.box_shadow};
-            min-height: 100vh;
+            min-height: calc(100vh - 140px);
+            position: relative;
         }}
 
         .header {{
@@ -85,8 +128,8 @@ class PresentationConfig:
         }}
 
         .logo {{
-            width: 120px;
-            height: 60px;
+            width: 150px;
+            height: 75px;
             background: url('{logo_url}') no-repeat center;
             background-size: contain;
             margin-right: 30px;
@@ -96,20 +139,20 @@ class PresentationConfig:
         .main-title {{
             font-size: {self.title_font_size};
             font-weight: 700;
-            color: {self.secondary_color};
+            color: {self.primary_color};
             margin: 0;
             line-height: 1.2;
         }}
 
         .section {{
-            margin-bottom: 40px;
+            margin-bottom: 30px;
             padding: {self.section_padding};
             border-left: 5px solid {self.primary_color};
             background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
             border-radius: 0 {self.border_radius} {self.border_radius} 0;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            page-break-inside: avoid;
-            break-inside: avoid;
+            page-break-inside: auto;
+            break-inside: auto;
         }}
 
         .section-title {{
@@ -128,8 +171,8 @@ class PresentationConfig:
             font-weight: 400;
             line-height: 1.8;
             color: {self.text_color};
-            orphans: 3;
-            widows: 3;
+            orphans: 2;
+            widows: 2;
         }}
 
         .section-content p {{
@@ -153,8 +196,8 @@ class PresentationConfig:
             border-radius: {self.border_radius};
             padding: 25px;
             margin: 20px 0;
-            page-break-inside: avoid;
-            break-inside: avoid;
+            page-break-inside: auto;
+            break-inside: auto;
         }}
 
         .phase-title {{
@@ -177,8 +220,8 @@ class PresentationConfig:
             padding: 20px 25px;
             border-radius: 0 {self.border_radius} {self.border_radius} 0;
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            page-break-inside: avoid;
-            break-inside: avoid;
+            page-break-inside: auto;
+            break-inside: auto;
         }}
 
         .timeline-week {{
@@ -194,8 +237,8 @@ class PresentationConfig:
             padding: 30px;
             margin: 25px 0;
             text-align: center;
-            page-break-inside: avoid;
-            break-inside: avoid;
+            page-break-inside: auto;
+            break-inside: auto;
         }}
 
         .price-amount {{
@@ -213,13 +256,14 @@ class PresentationConfig:
             padding: 40px;
             text-align: center;
             margin-top: 40px;
-            page-break-inside: avoid;
-            break-inside: avoid;
+            page-break-inside: auto;
+            break-inside: auto;
         }}
 
         .cta-title {{
             font-size: 1.8em;
             font-weight: 700;
+            color: white;
             margin-bottom: 20px;
             text-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }}
@@ -228,39 +272,41 @@ class PresentationConfig:
             font-size: 1.2em;
             font-weight: 400;
             line-height: 1.6;
+            color: white;
         }}
 
         .company-info {{
-            background: linear-gradient(135deg, {self.secondary_color} 0%, #34495e 100%);
+            background: linear-gradient(135deg, {self.secondary_color} 0%, {self.accent_color} 100%);
             color: white;
             border-radius: {self.border_radius};
             padding: 35px;
             margin: 30px 0;
-            page-break-inside: avoid;
-            break-inside: avoid;
+            page-break-inside: auto;
+            break-inside: auto;
         }}
 
         .company-title {{
             font-size: 1.5em;
             font-weight: 700;
             margin-bottom: 15px;
-            color: #ecf0f1;
+            color: white;
         }}
 
         .company-content {{
             font-weight: 400;
             font-size: 1.1em;
             line-height: 1.7;
+            color: white;
         }}
 
         .highlight-box {{
-            background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+            background: linear-gradient(135deg, rgba({self._hex_to_rgb(self.warning_color)}, 0.1) 0%, rgba({self._hex_to_rgb(self.primary_color)}, 0.1) 100%);
             border: 2px solid {self.warning_color};
             border-radius: {self.border_radius};
             padding: 25px;
             margin: 20px 0;
-            page-break-inside: avoid;
-            break-inside: avoid;
+            page-break-inside: auto;
+            break-inside: auto;
         }}
 
         .highlight-box .highlight-title {{
@@ -276,10 +322,15 @@ class PresentationConfig:
                 font-size: 12pt;
             }}
             
+            .page-logo,
+            .page-footer-design {{
+                display: none !important;
+            }}
+            
             .presentation-container {{
                 box-shadow: none !important;
                 margin: 0 !important;
-                padding: 0 !important;
+                padding: 20px !important;
                 max-width: none !important;
             }}
             
@@ -290,9 +341,10 @@ class PresentationConfig:
             .timeline-item,
             .phase-section,
             .cta-section {{
-                page-break-inside: avoid !important;
-                break-inside: avoid !important;
+                page-break-inside: auto !important;
+                break-inside: auto !important;
                 box-shadow: none !important;
+                margin-bottom: 20px !important;
             }}
             
             .header {{
@@ -311,6 +363,11 @@ class PresentationConfig:
         @media (max-width: 768px) {{
             .presentation-container {{
                 padding: 15px;
+            }}
+            
+            .page-logo {{
+                width: 100px;
+                height: 50px;
             }}
             
             .header {{
@@ -335,37 +392,40 @@ class PresentationConfig:
                 font-size: 1.4em;
             }}
         }}
-        
         """
+    
+    def _hex_to_rgb(self, hex_color: str) -> str:
+        """Convert hex color to RGB values for CSS rgba"""
+        hex_color = hex_color.lstrip('#')
+        if len(hex_color) == 3:
+            hex_color = ''.join([c*2 for c in hex_color])
+        try:
+            rgb = tuple(int(hex_color[i:i+2], 16) for i in (0, 2, 4))
+            return f"{rgb[0]}, {rgb[1]}, {rgb[2]}"
+        except:
+            return "0, 0, 0"
 
 def generate_presentation(
     filename: str,
-    logo_url: str = "https://via.placeholder.com/120x60/0066cc/ffffff?text=LOGO",
-    config: Optional[PresentationConfig] = None,
-    output_format: str = "html",
-    custom_colors: Optional[Dict[str, str]] = None
+    logo_url: str,
+    colors: List[str],
+    output_format: str = "html"
 ) -> Optional[str]:
     """
-    Generate HTML/PDF presentation from text file with customizable styling
+    Generate HTML/PDF presentation from text file with custom colors
     
     Args:
         filename (str): Path to the input text file
         logo_url (str): URL for the logo image
-        config (PresentationConfig): Configuration object for styling
+        colors (List[str]): List of hex color values
         output_format (str): Output format - 'html', 'pdf', or 'both'
-        custom_colors (dict): Custom color overrides
     
     Returns:
         str: Path to the generated file(s) or None if error
     """
     
-    # Initialize configuration
-    if config is None:
-        config = PresentationConfig()
-    
-    # Apply custom colors if provided
-    if custom_colors:
-        config.update_colors(**custom_colors)
+    # Initialize configuration with custom colors
+    config = PresentationConfig(colors)
     
     def parse_txt_file(file_path: str) -> List[Dict[str, str]]:
         """Parse the text file and extract title-text pairs"""
@@ -464,7 +524,8 @@ def generate_presentation(
             
             # Check if this is the main title section
             if title_lower in ['title', 'main title', 'presentation title']:
-                categorized['title'] = section
+                #categorized['title'] = section
+                pass
             # Company information sections
             elif any(keyword in title_lower for keyword in ['who we are', 'what we do', 'team', 'expertise', 'about us', 'company']):
                 categorized['company'].append(section)
@@ -504,6 +565,9 @@ def generate_presentation(
     <style>{css}</style>
 </head>
 <body>
+    <div class="page-logo"></div>
+    <div class="page-footer-design"></div>
+    
     <div class="presentation-container">
         <div class="header">
             <div class="logo"></div>
@@ -655,48 +719,20 @@ def generate_presentation(
         print(f"❌ Error: {e}")
         return None
 
-# Example usage and color presets
-def get_color_presets():
-    """Get predefined color schemes"""
-    return {
-        'blue': {
-            'primary_color': '#3498db',
-            'secondary_color': '#2c3e50',
-            'accent_color': '#e74c3c',
-            'success_color': '#27ae60'
-        },
-        'green': {
-            'primary_color': '#27ae60',
-            'secondary_color': '#2c3e50',
-            'accent_color': '#f39c12',
-            'success_color': '#3498db'
-        },
-        'purple': {
-            'primary_color': '#9b59b6',
-            'secondary_color': '#2c3e50',
-            'accent_color': '#e67e22',
-            'success_color': '#27ae60'
-        },
-        'orange': {
-            'primary_color': '#e67e22',
-            'secondary_color': '#2c3e50',
-            'accent_color': '#3498db',
-            'success_color': '#27ae60'
-        }
-    }
-
+# Example usage
 if __name__ == "__main__":
-    # Basic usage
-    generate_presentation(
-        "output.txt",
-        'https://static.wixstatic.com/media/cb6b3d_5c8f2b020ebe48b69bc8c163cc480156~mv2.png/v1/fill/w_60,h_60,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/GrowthSutra%20Logo.png'
-    )
+    # Example with custom colors matching your design
+    custom_colors = [
+        "#1E3A8A",  # Primary - Blue
+        "#059669",  # Secondary - Green  
+        "#DC2626",  # Accent - Red
+        "#7C3AED",  # Success - Purple
+        "#F59E0B"   # Warning - Orange
+    ]
     
-    # Advanced usage with custom colors and PDF output
-    custom_colors = get_color_presets()['green']
     generate_presentation(
         "output.txt",
-        'https://static.wixstatic.com/media/cb6b3d_5c8f2b020ebe48b69bc8c163cc480156~mv2.png/v1/fill/w_60,h_60,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/GrowthSutra%20Logo.png',
-        output_format='both',
-        custom_colors=custom_colors
+        "https://static.wixstatic.com/media/cb6b3d_5c8f2b020ebe48b69bc8c163cc480156~mv2.png/v1/fill/w_60,h_60,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/GrowthSutra%20Logo.png",
+        custom_colors,
+        'pdf'
     )
