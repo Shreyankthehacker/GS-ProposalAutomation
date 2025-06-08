@@ -68,10 +68,10 @@ class PresentationConfig:
             }}
             @bottom-center {{
                 content: "";
-                height: 60px;
+                height: 30px;
                 background: linear-gradient(135deg, {self.primary_color} 0%, {self.secondary_color} 30%, {self.accent_color} 60%, {self.success_color} 100%);
                 width: 100%;
-                border-radius: 30px 30px 0 0;
+                border-radius: 15px 15px 0 0;
             }}
         }}
 
@@ -102,19 +102,19 @@ class PresentationConfig:
             bottom: 0;
             left: 0;
             right: 0;
-            height: 60px;
+            height: 30px;
             background: linear-gradient(135deg, {self.primary_color} 0%, {self.secondary_color} 30%, {self.accent_color} 60%, {self.success_color} 100%);
-            border-radius: 30px 30px 0 0;
+            border-radius: 15px 15px 0 0;
             z-index: 999;
         }}
 
         .presentation-container {{
             max-width: {self.container_width};
             margin: 0 auto;
-            padding: 100px 20px 80px 20px;
+            padding: 100px 20px 50px 20px;
             background: white;
             box-shadow: {self.box_shadow};
-            min-height: calc(100vh - 140px);
+            min-height: calc(100vh - 130px);
             position: relative;
         }}
 
@@ -145,7 +145,7 @@ class PresentationConfig:
         }}
 
         .section {{
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             padding: {self.section_padding};
             border-left: 5px solid {self.primary_color};
             background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
@@ -153,6 +153,8 @@ class PresentationConfig:
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
             page-break-inside: auto;
             break-inside: auto;
+            orphans: 2;
+            widows: 2;
         }}
 
         .section-title {{
@@ -176,17 +178,17 @@ class PresentationConfig:
         }}
 
         .section-content p {{
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }}
 
         .section-content ul, .section-content ol {{
             margin-left: 25px;
-            margin-top: 15px;
-            margin-bottom: 15px;
+            margin-top: 12px;
+            margin-bottom: 12px;
         }}
 
         .section-content li {{
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             font-weight: 400;
         }}
 
@@ -195,9 +197,11 @@ class PresentationConfig:
             border: 2px solid {self.primary_color};
             border-radius: {self.border_radius};
             padding: 25px;
-            margin: 20px 0;
+            margin: 15px 0;
             page-break-inside: auto;
             break-inside: auto;
+            orphans: 2;
+            widows: 2;
         }}
 
         .phase-title {{
@@ -216,12 +220,14 @@ class PresentationConfig:
         .timeline-item {{
             background: white;
             border-left: 4px solid {self.success_color};
-            margin: 15px 0;
+            margin: 12px 0;
             padding: 20px 25px;
             border-radius: 0 {self.border_radius} {self.border_radius} 0;
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
             page-break-inside: auto;
             break-inside: auto;
+            orphans: 2;
+            widows: 2;
         }}
 
         .timeline-week {{
@@ -235,10 +241,12 @@ class PresentationConfig:
             border: 3px solid {self.success_color};
             border-radius: {self.border_radius};
             padding: 30px;
-            margin: 25px 0;
+            margin: 20px 0;
             text-align: center;
             page-break-inside: auto;
             break-inside: auto;
+            orphans: 2;
+            widows: 2;
         }}
 
         .price-amount {{
@@ -255,9 +263,11 @@ class PresentationConfig:
             border-radius: {self.border_radius};
             padding: 40px;
             text-align: center;
-            margin-top: 40px;
+            margin-top: 30px;
             page-break-inside: auto;
             break-inside: auto;
+            orphans: 2;
+            widows: 2;
         }}
 
         .cta-title {{
@@ -280,9 +290,11 @@ class PresentationConfig:
             color: white;
             border-radius: {self.border_radius};
             padding: 35px;
-            margin: 30px 0;
+            margin: 25px 0;
             page-break-inside: auto;
             break-inside: auto;
+            orphans: 2;
+            widows: 2;
         }}
 
         .company-title {{
@@ -304,9 +316,11 @@ class PresentationConfig:
             border: 2px solid {self.warning_color};
             border-radius: {self.border_radius};
             padding: 25px;
-            margin: 20px 0;
+            margin: 15px 0;
             page-break-inside: auto;
             break-inside: auto;
+            orphans: 2;
+            widows: 2;
         }}
 
         .highlight-box .highlight-title {{
@@ -344,7 +358,8 @@ class PresentationConfig:
                 page-break-inside: auto !important;
                 break-inside: auto !important;
                 box-shadow: none !important;
-                margin-bottom: 20px !important;
+                orphans: 2 !important;
+                widows: 2 !important;
             }}
             
             .header {{
@@ -366,8 +381,8 @@ class PresentationConfig:
             }}
             
             .page-logo {{
-                width: 100px;
-                height: 50px;
+                width: 90px;
+                height: 45px;
             }}
             
             .header {{
@@ -522,10 +537,9 @@ def generate_presentation(
         for section in sections:
             title_lower = section['title'].lower()
             
-            # Check if this is the main title section
-            if title_lower in ['title', 'main title', 'presentation title']:
-                #categorized['title'] = section
-                pass
+            # Check if this is the main title section - skip it for display
+            if title_lower in ['title', 'main title', 'presentation title', 'title of the sales proposal']:
+                categorized['title'] = section
             # Company information sections
             elif any(keyword in title_lower for keyword in ['who we are', 'what we do', 'team', 'expertise', 'about us', 'company']):
                 categorized['company'].append(section)
@@ -575,7 +589,7 @@ def generate_presentation(
         </div>
 '''
         
-        # Add main sections
+        # Add main sections (skip title section)
         for section in categorized['main']:
             if section == categorized['title']:
                 continue
