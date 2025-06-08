@@ -9,3 +9,4 @@ def clean_to_list(result:str) :
     if result.endswith('```'):
         result = result[:-3].strip()
     return result
+

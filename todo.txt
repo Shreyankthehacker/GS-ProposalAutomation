@@ -1,4 +1,2 @@
-# in the logo extraction check the regex 
-# logo color extraction
-# Client requirement - to be renamed
-# Summarize those recommendations
+# logo color missing checklater
+# precomputed area
