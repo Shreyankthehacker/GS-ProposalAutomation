@@ -440,6 +440,7 @@ def generate_presentation(
     """
     
     # Initialize configuration with custom colors
+    print(f"Generating")
     config = PresentationConfig(colors)
     
     def parse_txt_file(file_path: str) -> List[Dict[str, str]]:
@@ -662,6 +663,7 @@ def generate_presentation(
         return html_template
     
     def generate_pdf_from_html(html_content: str, output_path: str) -> bool:
+
         """Generate PDF from HTML using WeasyPrint"""
         try:
             import weasyprint
@@ -733,13 +735,4 @@ def generate_presentation(
         print(f"❌ Error: {e}")
         return None
 
-if __name__ == "__main__":
-    # Example with custom colors matching your design
-    custom_colors =['#4dae40', '#0487fa', '#1b9c76', '#1492c9', '#4eac9d', '#4cacac']
-    
-    generate_presentation(
-        "output.txt",
-        "https://static.wixstatic.com/media/cb6b3d_5c8f2b020ebe48b69bc8c163cc480156~mv2.png/v1/fill/w_60,h_60,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/GrowthSutra%20Logo.png",
-        custom_colors,
-        'pdf'
-    )
+

@@ -1,4 +1,4 @@
-def clean_to_list(result:str) :
+def clean_to_list(result:str) ->list : 
     result = result.strip()
     if result.startswith('```python'):
         result = result[len('```python'):].strip()

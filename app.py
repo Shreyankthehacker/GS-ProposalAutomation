@@ -8,7 +8,7 @@ from WebScraper.scrape import get_data
 from WebScraper.scrape_utils import extract_hex_colors
 from SearchAndRecommendation.prompt_suggestion.recommend import get_recommendation,get_project_specification
 from WebScraper.state import User
-
+from PresesntationWriting.src.main import get_presentation
 
 
 buyer = None
@@ -78,6 +78,7 @@ def display_scraped_data(scraped_data, section_name):
     """Display the scraped company data in a nice format"""
     if not scraped_data:
         return
+    global buyer, seller
     if section_name.lower()=='buyer':
         buyer = scraped_data
     else:
@@ -760,6 +761,14 @@ if st.session_state.timeline_suggestions:
     else:
         st.info("No item selected. Click a ➕ button to select an option.")
 
+
+
+
+# Button to trigger the function
+if st.button("🚀Generate report"):
+    print(buyer)
+    get_presentation(buyer = buyer,seller = seller,client_requirement=st.session_state.client_requirement,service_dept=','.join(st.session_state[f'seller_final_services']),additonal_info=[st.session_state['selected_text']])
+    
 
 if st.checkbox("Show debug info"):
     st.write("**Debug Information:**")

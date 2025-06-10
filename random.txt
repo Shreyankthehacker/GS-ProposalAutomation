@@ -1,4 +1,44 @@
-if(root->right){
-        mini = minimum(abs(root->val-root->right->val),mini);
-        getMinimumDifference(root->right);
-     }
+Increasing sales by 10% within a year 
+
+    *   **Anticipate and Acknowledge Pain Points:** Identify potential challenges or concerns the client might have regarding the project (e.g., budget constraints, tight deadlines, integration complexities).
+    *   **Offer Mitigation Strategies:** For each identified pain point, propose concrete solutions or mitigation strategies. This demonstrates foresight and a commitment to problem-solving.
+    *   **Address Risk Management:** Include a section on risk management, outlining potential risks and the steps you will take to minimize their impact.
+    *   **Offer Flexible Options:** Where possible, provide flexible options to accommodate potential client constraints. This could include phased implementation, customizable solutions, or alternative pricing models.
+    *   **Provide Clear Communication Plan:** Outline how you will maintain communication throughout the project, ensuring transparency and addressing concerns promptly.
+    
+
+    *   **Clearly Define Project Objectives:** Collaboratively define the specific, measurable, achievable, relevant, and time-bound (SMART) objectives of the project. Ensure these align with the client's broader strategic goals.
+    *   **Demonstrate Understanding of Client's Industry:** Research and demonstrate a deep understanding of the client's industry, competitive landscape, and market trends.
+    *   **Showcase Long-Term Value:** Emphasize the long-term benefits of the proposed solution, such as increased efficiency, improved profitability, or enhanced market position.
+    *   **Propose Metrics for Success:** Define key performance indicators (KPIs) that will be used to measure the success of the project and track progress toward achieving the client's goals.
+    *   **Offer Scalability and Future-Proofing:** Demonstrate how the proposed solution can be scaled or adapted to meet the client's future needs and evolving business environment.
+    
+
+    *   **Highlight Key Differentiators:** Emphasize what makes your company unique compared to competitors. This could be proprietary technology, a specialized team, or a proven methodology. Tailor these differentiators to align with potential client needs.
+    *   **Present Compelling Case Studies:** Include relevant case studies that demonstrate successful outcomes achieved for similar clients or projects. Quantify the results (e.g., cost savings, revenue increase, efficiency gains) to showcase tangible value.
+    *   **Offer a Focused Service Portfolio:** Rather than overwhelming the client with every service, highlight the core offerings that directly address their likely needs. Position these as the cornerstone of the proposed solution.
+    *   **Introduce the Expert Team:** Briefly introduce key personnel who will be working on the project, highlighting their relevant experience and qualifications. This builds trust and demonstrates competence.
+    *   **Provide a Clear Process Overview:** Outline the steps involved in delivering the core services, providing transparency and demonstrating a well-defined approach. This shows that you have a reliable, repeatable process.
+    
+
+
+  • Phase 1: Discovery & Strategy (5 days)
+    - Team: 2 Project Managers, 1 Marketing Analyst
+    - Tasks: Market research, competitor analysis, target audience identification, objective definition, KPI establishment.
+    - Cost: $25,000
+
+  • Phase 2: Content & Creative Development (10 days)
+    - Team: 2 Content Writers, 2 Graphic Designers
+    - Tasks: Content creation (website, blog, social media), visual asset design (ads, infographics).
+    - Cost: $50,000
+
+  • Phase 3: Campaign Execution & Management (10 days)
+    - Team: 2 Digital Marketing Specialists, 1 Data Analyst
+    - Tasks: Campaign setup, ad buying, social media management, performance monitoring, A/B testing.
+    - Cost: $50,000
+
+  • Phase 4: Analysis & Reporting (5 days)
+    - Team: 1 Data Analyst, 1 Project Manager
+    - Tasks: Data analysis, report generation, insights and recommendations for future campaigns.
+    - Cost: $25,000
+  
