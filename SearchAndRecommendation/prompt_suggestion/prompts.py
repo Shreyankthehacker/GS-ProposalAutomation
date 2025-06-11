@@ -50,30 +50,32 @@ Return the result as a **Python dictionary** formatted exactly like:
   • Phase 1: Planning (1 day)
     - Team: 2 Project Managers
     - Tasks: Define scope, stakeholder alignment
-    - Cost: $500
+    - Cost: 5000 rupees
 
   • Phase 2: Development (2 days)
     - Team: 10 Developers, 3 Designers
     - Tasks: Build UI, backend APIs
-    - Cost: $1800
+    - Cost: 18000 rupees
 
   • Phase 3: Testing & QA (1 day)
     - Team: 3 QA Engineers
     - Tasks: Functional testing, bug fixes
-    - Cost: $400
+    - Cost: 400 rupees
 
   • Phase 4: Deployment (1 day)
     - Team: 2 DevOps
     - Tasks: Setup production, monitoring
-    - Cost: $300
+    - Cost: 3000 rupees
   """,
 
-  "10 days 5000$ and team of 10 people": """ 
+  "10 days 50000 rupees and team of 10 people": """ 
   • Phase 1: ...
   """,
 
-  "15 days 6000$ and team of 6 people": """ 
+  "15 days 60000 rupees and team of 6 people": """ 
   • Phase 1: ...
   """
+
+  Important : Try giving in indian context the currency and timeline 
 }}
 '''

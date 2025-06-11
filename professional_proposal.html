@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accelerating SynergyTop's Growth: A Comprehensive On-Demand CMO Solution</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @page {
+            size: A4;
+            margin: 0;
+        }
+
+        body {
+            font-family: 'Arial', 'Helvetica', sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background: white;
+            font-size: 11pt;
+        }
+
+        /* PROFESSIONAL COVER PAGE */
+        .cover-page {
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            page-break-after: always;
+            padding: 40px;
+        }
+
+        .cover-logos {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 80px;
+            margin-bottom: 80px;
+        }
+
+        .cover-logo {
+            width: 300px;
+            height: 180px;
+            background-color: white;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+            padding: 25px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .cover-logo img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .cover-logo-1 {
+            background: white url('https://static.wixstatic.com/media/cb6b3d_5c8f2b020ebe48b69bc8c163cc480156~mv2.png/v1/fill/w_60,h_60,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/GrowthSutra%20Logo.png') no-repeat center;
+            background-size: contain;
+        }
+
+        .cover-logo-2 {
+            background: white url('https://synergytop.com/wp-content/themes/Avada-Child-Theme/assets/images/synergytop-logo.webp') no-repeat center;
+            background-size: contain;
+        }
+
+        .cover-title {
+            font-size: 42pt;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 30px;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            max-width: 90%;
+            line-height: 1.2;
+        }
+
+        .cover-subtitle {
+            font-size: 18pt;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 60px;
+            max-width: 80%;
+            font-weight: 300;
+        }
+
+        .cover-date {
+            font-size: 14pt;
+            color: rgba(255,255,255,0.85);
+            background: rgba(255,255,255,0.1);
+            padding: 12px 30px;
+            border-radius: 4px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        /* CLEAN CONTENT PAGES - NO LOGOS */
+        .content-page {
+            page-break-before: always;
+            position: relative;
+            padding: 50px;
+            min-height: 100vh;
+            background: white;
+        }
+
+        .presentation-container {
+            max-width: 100%;
+            padding: 0;
+            background: white;
+            position: relative;
+        }
+
+        .main-title {
+            font-size: 24pt;
+            font-weight: 700;
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 50px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #2c3e50;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            padding: 25px;
+            border-left: 4px solid #2c3e50;
+            background: #fafafa;
+            page-break-inside: avoid;
+        }
+
+        .section-title {
+            font-size: 16pt;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 8px;
+        }
+
+        .section-content {
+            font-size: 11pt;
+            line-height: 1.7;
+            color: #2c3e50;
+        }
+
+        .section-content p {
+            margin-bottom: 12px;
+        }
+
+        .section-content ul {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+
+        .section-content li {
+            margin-bottom: 6px;
+        }
+
+        .company-info {
+            background: #34495e;
+            color: white;
+            padding: 30px;
+            margin: 30px 0;
+            page-break-inside: avoid;
+        }
+
+        .company-title {
+            font-size: 16pt;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: white;
+        }
+
+        .company-content {
+            font-size: 11pt;
+            line-height: 1.6;
+            color: white;
+        }
+
+        .pricing-highlight {
+            background: #f8f9fa;
+            border: 3px solid #27ae60;
+            padding: 30px;
+            margin: 30px 0;
+            text-align: center;
+            page-break-inside: avoid;
+        }
+
+        .price-amount {
+            font-size: 28pt;
+            font-weight: 700;
+            color: #27ae60;
+            margin-bottom: 15px;
+        }
+
+        .cta-section {
+            background: #2c3e50;
+            color: white;
+            padding: 30px;
+            text-align: center;
+            margin-top: 40px;
+            page-break-inside: avoid;
+        }
+
+        .cta-title {
+            font-size: 18pt;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 15px;
+        }
+
+        .cta-content {
+            font-size: 12pt;
+            line-height: 1.5;
+            color: white;
+        }
+
+        .phase-section {
+            background: white;
+            border: 2px solid #3498db;
+            padding: 25px;
+            margin: 20px 0;
+            page-break-inside: avoid;
+        }
+
+        .phase-title {
+            font-size: 14pt;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 12px;
+        }
+
+        .timeline-item {
+            background: white;
+            border-left: 4px solid #27ae60;
+            margin: 12px 0;
+            padding: 15px 20px;
+            page-break-inside: avoid;
+        }
+
+        .timeline-week {
+            font-weight: 600;
+            color: #27ae60;
+            font-size: 12pt;
+        }
+
+        /* PDF PRINT OPTIMIZATION */
+        @media print {
+            .cover-page {
+                width: 210mm !important;
+                height: 297mm !important;
+                page-break-after: always !important;
+                margin: 0 !important;
+                padding: 20mm !important;
+            }
+            
+            .content-page {
+                page-break-before: always !important;
+                margin: 20mm !important;
+                padding: 0 !important;
+                min-height: calc(297mm - 40mm) !important;
+            }
+            
+            .presentation-container {
+                padding: 0 !important;
+            }
+            
+            .section,
+            .company-info,
+            .pricing-highlight,
+            .cta-section,
+            .phase-section,
+            .timeline-item {
+                page-break-inside: avoid !important;
+                orphans: 2 !important;
+                widows: 2 !important;
+            }
+        }
+        </style>
+</head>
+<body>
+    <!-- COVER PAGE WITH CLEAR LOGOS -->
+    <div class="cover-page">
+        <div class="cover-logos">
+            <div class="cover-logo cover-logo-1"></div>
+            <div class="cover-logo cover-logo-2"></div>
+        </div>
+        <h1 class="cover-title">Accelerating SynergyTop's Growth: A Comprehensive On-Demand CMO Solution</h1>
+        <p class="cover-subtitle">Professional Sales Proposal</p>
+        <p class="cover-date">June 2025</p>
+    </div>
+    
+    <!-- CLEAN CONTENT PAGES (NO LOGOS) -->
+    <div class="content-page">
+        <div class="presentation-container">
+
+            <div class="section">
+                <h2 class="section-title">Title of the sales proposal</h2>
+                <div class="section-content">
+                    <p>Accelerating SynergyTop's Growth: A Comprehensive On-Demand CMO Solution</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">Executive Summary</h2>
+                <div class="section-content">
+                    <p>GrowthSutra proposes a four-phased On-Demand CMO solution tailored to SynergyTop's unique needs.  This strategic partnership leverages our 20+ years of experience in accelerating brand and revenue growth for technology companies. We will conduct in-depth market research, implement a robust GTM strategy, and provide ongoing mentorship to ensure sustainable growth and market leadership for SynergyTop. This proposal outlines a phased approach, delivering measurable results and knowledge transfer, ultimately empowering SynergyTop's internal team for long-term success.</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">About GrowthSutra and Our Approach</h2>
+                <div class="section-content">
+                    <p>GrowthSutra is a leading growth consultancy specializing in driving market access, customer traction, and investor interest for startups and SMBs. We bring Fortune 500-level strategic thinking and execution to our clients, combining seasoned executive expertise with data-driven frameworks and rigorous project governance. Our approach is deeply collaborative, ensuring a seamless integration with your team and a tailored solution that aligns perfectly with your specific objectives and business context.  We focus on delivering measurable results and empowering our clients with the knowledge and capabilities to sustain their growth long after our engagement concludes.</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">Understanding Your Business Needs</h2>
+                <div class="section-content">
+                    <p>SynergyTop, a dynamic software development and consulting company, seeks to accelerate its market penetration and revenue growth across diverse sectors.  We understand your need for a strategic, data-driven approach that delivers tangible results and empowers your internal team.  Your focus on HealthTech, EduTech, and Solar Energy highlights the need for a nuanced GTM strategy that addresses the specific characteristics and opportunities within each market segment.  Our On-Demand CMO solution is designed to address these needs precisely.</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">Proposed Solution: On-Demand CMO Services</h2>
+                <div class="section-content">
+                    <p>Our On-Demand CMO service provides SynergyTop with access to a seasoned team of marketing, sales, and leadership experts, offering a scalable and flexible solution to support your growth objectives. We will act as an extension of your team, providing strategic guidance and tactical execution across all aspects of your go-to-market strategy. This includes in-depth market research, competitor analysis, sales enablement, and ongoing mentorship to ensure sustainable growth.</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">Pricing & Investment</h2>
+                <div class="section-content">
+                    <p>The total investment for this comprehensive On-Demand CMO solution is ₹17,50,000 (INR Seventeen Lakhs Fifty Thousand only), broken down as follows:</p>
+<ul>
+<li>Phase 1: ₹4,37,500</li>
+<li>Phase 2: ₹4,37,500</li>
+<li>Phase 3: ₹4,37,500</li>
+<li>Phase 4: ₹4,37,500</li>
+</ul>
+<p>Detailed payment terms will be outlined in a formal contract.</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">Client Success Stories/Case Studies</h2>
+                <div class="section-content">
+                    <p>We have a strong track record of success in helping technology companies achieve significant growth.  Case studies showcasing our work with similar clients in the tech sector, demonstrating quantifiable results in terms of increased brand awareness, lead generation, and revenue growth, are available upon request.  We can tailor these examples to highlight specific parallels with SynergyTop's goals and industry.</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">Appendix (Optional)</h2>
+                <div class="section-content">
+                    <p>Title: Who We Are</p>
+<p>Text: GrowthSutra is a team of seasoned marketing, communications, sales, and leadership executives, each with over 20+ years of experience launching and scaling disruptive brands across diverse sectors.</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">Scope of Work / Project Breakdown</h2>
+                <div class="section-content">
+                    <p>Our proposed engagement is divided into four distinct phases:</p>
+<p><strong>Phase 1: Extensive Research & Strategy Formulation (25 days)</strong></p>
+<ul>
+<li>Conduct comprehensive market research across target sectors (HealthTech, EduTech, Solar Energy).</li>
+<li>Perform in-depth competitor analysis, identifying strengths, weaknesses, and market opportunities.</li>
+<li>Develop multiple GTM strategy scenarios tailored to each target sector, considering market dynamics, competitive landscape, and SynergyTop's unique capabilities.</li>
+<li>Conduct stakeholder interviews within SynergyTop to gather internal perspectives and align the strategy with organizational goals.</li>
+<li>Deliver a comprehensive market research report, a detailed GTM strategy document (including risk assessment), and a summary of stakeholder feedback.</li>
+</ul>
+<p><strong>Phase 2: Comprehensive Audit & Phased Implementation (25 days)</strong></p>
+<ul>
+<li>Conduct a thorough Sales Enablement audit to identify areas for improvement in sales processes, tools, and training.</li>
+<li>Perform a RevenueOps audit to optimize revenue generation processes, identify bottlenecks, and enhance efficiency.</li>
+<li>Develop prioritized recommendations based on audit findings, focusing on immediate impact and long-term scalability.</li>
+<li>Implement recommendations in phases, with continuous monitoring and adjustments based on real-time data and market feedback.</li>
+<li>Deliver detailed audit reports with prioritized recommendations, phased implementation plans with timelines, and regular progress reports.</li>
+</ul>
+<p><strong>Phase 3: Sustained GTM Execution & XPRT Co-Pilot Mentorship (25 days)</strong></p>
+<ul>
+<li>Execute the agreed-upon GTM strategy, actively monitoring performance indicators and making necessary adjustments.</li>
+<li>Provide regular XPRT Co-Pilot mentorship to SynergyTop's leadership team, offering guidance, support, and strategic insights.</li>
+<li>Facilitate knowledge sharing and best practice implementation within SynergyTop’s team.</li>
+<li>Deliver regular GTM execution progress reports with key performance indicators (KPIs) and XPRT Co-Pilot mentorship summaries with action plans.</li>
+</ul>
+<p><strong>Phase 4: Long-Term Optimization & Knowledge Transfer (15 days)</strong></p>
+<ul>
+<li>Analyze long-term performance data to identify opportunities for sustained growth and continuous improvement.</li>
+<li>Develop actionable insights and recommendations for long-term growth strategies.</li>
+<li>Conduct comprehensive knowledge transfer sessions, providing training materials and documentation to empower SynergyTop’s internal team.</li>
+<li>Deliver long-term performance reports with actionable insights and comprehensive knowledge transfer documentation and training materials.</li>
+</ul>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">Timeline & Milestones</h2>
+                <div class="section-content">
+                    <p>The project is planned for a total of 100 days, divided into four phases as detailed in the Scope of Work.  Key milestones and deliverables for each phase will be outlined in a detailed project plan shared upon project commencement.  Regular progress reports will be provided throughout the engagement.</p>
+                </div>
+            </div>
+
+            <div class="company-info">
+                <h3 class="company-title">What We Do</h3>
+                <div class="company-content">
+                    <p>We help startups and SMBs accelerate their brand and revenue growth through strategic planning, tactical execution, and ongoing mentorship. We offer a range of services, including market research, GTM strategy development, sales enablement, and revenue operations optimization.</p>
+                </div>
+            </div>
+
+            <div class="cta-section">
+                <h3 class="cta-title">Call to Action/Next Steps</h3>
+                <div class="cta-content">
+                    <p>We are confident that our On-Demand CMO solution will significantly accelerate SynergyTop's growth and market leadership. We propose a follow-up meeting to discuss this proposal in detail and answer any questions you may have.  Please let us know your availability for a call next week. We look forward to partnering with you.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

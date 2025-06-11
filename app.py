@@ -9,7 +9,7 @@ from WebScraper.scrape_utils import extract_hex_colors
 from SearchAndRecommendation.prompt_suggestion.recommend import get_recommendation,get_project_specification
 from WebScraper.state import User
 from PresesntationWriting.src.main import get_presentation
-
+import os 
 
 buyer = None
 seller =None 
@@ -763,12 +763,295 @@ if st.session_state.timeline_suggestions:
 
 
 
+# Enhanced Report Generation Section
+import streamlit as st
+import os
+import time
 
-# Button to trigger the function
-if st.button("🚀Generate report"):
-    print(buyer)
-    get_presentation(buyer = buyer,seller = seller,client_requirement=st.session_state.client_requirement,service_dept=','.join(st.session_state[f'seller_final_services']),additonal_info=[st.session_state['selected_text']])
+# Custom CSS for better styling
+st.markdown("""
+<style>
+    .report-container {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 2rem;
+        border-radius: 15px;
+        margin: 1rem 0;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        color: white;
+    }
     
+    .report-title {
+        font-size: 2rem;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 1rem;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+    
+    .generate-btn {
+        background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
+        color: white;
+        border: none;
+        padding: 15px 30px;
+        border-radius: 50px;
+        font-size: 18px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        width: 100%;
+        margin: 1rem 0;
+    }
+    
+    .generate-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    }
+    
+    .download-section {
+        background: rgba(255,255,255,0.1);
+        padding: 1.5rem;
+        border-radius: 10px;
+        margin-top: 1rem;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255,255,255,0.2);
+    }
+    
+    .success-message {
+        background: linear-gradient(45deg, #56ab2f, #a8e6cf);
+        padding: 1rem;
+        border-radius: 10px;
+        color: white;
+        text-align: center;
+        font-weight: bold;
+        margin: 1rem 0;
+        animation: fadeIn 0.5s ease-in;
+    }
+    
+    .error-message {
+        background: linear-gradient(45deg, #ff416c, #ff4b2b);
+        padding: 1rem;
+        border-radius: 10px;
+        color: white;
+        text-align: center;
+        font-weight: bold;
+        margin: 1rem 0;
+        animation: shake 0.5s ease-in-out;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-5px); }
+        75% { transform: translateX(5px); }
+    }
+    
+    .loading-spinner {
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #3498db;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+        margin: 20px auto;
+    }
+    
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    
+    .btn-container {
+        display: flex;
+        gap: 10px;
+        margin-top: 1rem;
+    }
+    
+    .download-btn {
+        flex: 1;
+        padding: 12px 20px;
+        border-radius: 8px;
+        border: none;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s;
+        text-decoration: none;
+        text-align: center;
+        display: inline-block;
+    }
+    
+    .pdf-btn {
+        background: linear-gradient(45deg, #e74c3c, #c0392b);
+        color: white;
+    }
+    
+    .html-btn {
+        background: linear-gradient(45deg, #3498db, #2980b9);
+        color: white;
+    }
+    
+    .download-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+</style>
+""", unsafe_allow_html=True)
+
+# Main Report Generation Container
+st.markdown('<div class="report-container">', unsafe_allow_html=True)
+st.markdown('<div class="report-title">📊 AI-Powered Report Generation</div>', unsafe_allow_html=True)
+
+# Report generation button with enhanced styling
+col1, col2, col3 = st.columns([1, 2, 1])
+with col2:
+    if st.button("🚀 Generate Comprehensive Report", key="generate_report", help="Click to generate your customized business report"):
+        # Show loading state
+        with st.spinner(""):
+            st.markdown('<div class="loading-spinner"></div>', unsafe_allow_html=True)
+            st.markdown("**🔄 Generating your report... Please wait**", unsafe_allow_html=True)
+            
+            # Debug information
+            print(type(buyer))
+            
+            # Generate the report
+            result = get_presentation(
+                buyer=buyer,
+                seller=seller,
+                client_requirement=st.session_state.client_requirement,
+                service_dept=','.join(st.session_state.get('seller_final_services', [])),
+                additonal_info=[st.session_state.get('selected_text', '')]
+            )
+            
+            # Clear loading state
+            st.empty()
+            
+            # Check if report generation was successful
+            if result:
+                st.markdown("""
+                <div class="success-message">
+                    ✅ Report Generated Successfully!
+                    <br>Your comprehensive business report is ready for download.
+                </div>
+                """, unsafe_allow_html=True)
+                
+                # File paths
+                html_path = '/home/shreyank/Gen-ai/Growth/professional_proposal.pdf'
+                pdf_path = '/home/shreyank/Gen-ai/Growth/professional_proposal.pdf'
+                
+                # Download section with enhanced styling
+                st.markdown('<div class="download-section">', unsafe_allow_html=True)
+                st.markdown("### 📥 Download Options")
+                
+                # Create columns for download buttons
+                download_col1, download_col2 = st.columns(2)
+                
+                # PDF Download
+                with download_col1:
+                    if os.path.isfile(pdf_path):
+                        with open(pdf_path, 'rb') as f:
+                            pdf_data = f.read()
+                            st.download_button(
+                                label="📄 Download PDF Report",
+                                data=pdf_data,
+                                file_name=f"business_report_{time.strftime('%Y%m%d_%H%M%S')}.pdf",
+                                mime='application/pdf',
+                                help="Download the report as a PDF file",
+                                use_container_width=True
+                            )
+                        st.success(f"📊 PDF Size: {len(pdf_data)/1024:.1f} KB")
+                    else:
+                        st.warning("⚠️ PDF file not found")
+                
+                # HTML Preview
+                with download_col2:
+                    if os.path.isfile(html_path):
+                        # Create a better HTML preview button
+                        st.markdown(f"""
+                        <div style="text-align: center;">
+                            <a href="file://{html_path}" target="_blank" style="text-decoration: none;">
+                                <button class="download-btn html-btn" style="width: 100%; margin-bottom: 10px;">
+                                    🔍 Preview HTML Report
+                                </button>
+                            </a>
+                        </div>
+                        """, unsafe_allow_html=True)
+                        
+                        # Alternative: Show HTML content in an expander
+                        with st.expander("👁️ Quick Preview", expanded=False):
+                            try:
+                                with open(html_path, 'r', encoding='utf-8') as f:
+                                    html_content = f.read()
+                                    # Display first 500 characters as preview
+                                    st.code(html_content[:500] + "..." if len(html_content) > 500 else html_content, language='html')
+                                st.info("💡 Click 'Preview HTML Report' button above to view the full report in a new tab")
+                            except Exception as e:
+                                st.error(f"Could not preview HTML: {str(e)}")
+                        
+                        st.success("✅ HTML file ready")
+                    else:
+                        st.warning("⚠️ HTML file not found")
+                
+                st.markdown('</div>', unsafe_allow_html=True)  # Close download-section
+                
+                # Additional options
+                st.markdown("---")
+                
+                # Report statistics
+                info_col1, info_col2, info_col3 = st.columns(3)
+                with info_col1:
+                    st.metric("📈 Report Status", "Completed", "✅")
+                with info_col2:
+                    st.metric("⏱️ Generated At", time.strftime('%H:%M:%S'))
+                with info_col3:
+                    st.metric("📅 Date", time.strftime('%Y-%m-%d'))
+                
+            else:
+                st.markdown("""
+                <div class="error-message">
+                    ❌ Report Generation Failed
+                    <br>Please check your inputs and try again.
+                </div>
+                """, unsafe_allow_html=True)
+                
+                # Troubleshooting tips
+                with st.expander("🔧 Troubleshooting Tips", expanded=True):
+                    st.markdown("""
+                    **Common issues and solutions:**
+                    - ✅ Ensure all required fields are filled
+                    - ✅ Check your internet connection
+                    - ✅ Verify file paths are accessible
+                    - ✅ Try refreshing the page and generating again
+                    - ✅ Contact support if the issue persists
+                    """)
+
+st.markdown('</div>', unsafe_allow_html=True)  # Close report-container
+
+# Additional features section
+st.markdown("---")
+with st.expander("ℹ️ Report Features", expanded=False):
+    feature_col1, feature_col2 = st.columns(2)
+    
+    with feature_col1:
+        st.markdown("""
+        **📊 What's Included:**
+        - Comprehensive business analysis
+        - Visual charts and graphs
+        - Executive summary
+        - Detailed recommendations
+        """)
+    
+    with feature_col2:
+        st.markdown("""
+        **🎯 Report Benefits:**
+        - Professional formatting
+        - Easy to share and present
+        - Actionable insights
+        - Customized for your needs
+        """)
 
 if st.checkbox("Show debug info"):
     st.write("**Debug Information:**")

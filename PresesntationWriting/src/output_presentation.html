@@ -1,10 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Accelerating Brand & Revenue Growth for TCS: A GrowthSutra Strategic Partnership Proposal</title>
-    <style>
+
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Title of the sales proposal</title>
+            <style>
+                
         * {
             margin: 0;
             padding: 0;
@@ -14,21 +16,6 @@
         @page {
             size: A4;
             margin: 20mm;
-            @top-left {
-                content: "";
-                background: url('https://static.wixstatic.com/media/cb6b3d_5c8f2b020ebe48b69bc8c163cc480156~mv2.png/v1/fill/w_60,h_60,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/GrowthSutra%20Logo.png') no-repeat;
-                background-size: contain;
-                width: 120px;
-                height: 60px;
-                margin: 10px;
-            }
-            @bottom-center {
-                content: "";
-                height: 30px;
-                background: linear-gradient(135deg, #4dae40 0%, #0487fa 30%, #1b9c76 60%, #1492c9 100%);
-                width: 100%;
-                border-radius: 15px 15px 0 0;
-            }
         }
 
         body {
@@ -42,14 +29,188 @@
             min-height: 100vh;
         }
 
+        /* ENHANCED COVER PAGE STYLES */
+        .cover-page {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #4F4F4F 0%, #101213 50%, #DBDBDB 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            page-break-after: always;
+        }
+
+        .cover-page::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(255,255,255,0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255,255,255,0.05) 0%, transparent 50%),
+                linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.03) 50%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .cover-logos {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 80px;
+            margin-bottom: 60px;
+            z-index: 2;
+            position: relative;
+        }
+
+        .cover-logo {
+            width: 200px;
+            height: 120px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+            border: 3px solid rgba(255,255,255,0.4);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cover-logo::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: inherit;
+            padding: 3px;
+            background: linear-gradient(45deg, rgba(255,255,255,0.6), rgba(255,255,255,0.2));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: exclude;
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask-composite: exclude;
+        }
+
+        .cover-logo:hover {
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        /* INTELLIGENT LOGO BACKGROUNDS */
+        .cover-logo-1 {
+            background-color: #ffffff;
+            background-image: url('https://benori.com/assets/web/images/Benori_Logo.svg');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 80%;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+        }
+
+        .cover-logo-2 {
+            background-color: #f8f9fa;
+            background-image: url('https://static.wixstatic.com/media/cb6b3d_5c8f2b020ebe48b69bc8c163cc480156~mv2.png/v1/fill/w_60,h_60,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/GrowthSutra%20Logo.png');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 80%;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+        }
+
+        /* LOGO CONTRAST ENHANCEMENT */
+        .cover-logo-1::after {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            background: url('https://benori.com/assets/web/images/Benori_Logo.svg') no-repeat center;
+            background-size: contain;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+            z-index: 1;
+        }
+
+        .cover-logo-2::after {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            background: url('https://static.wixstatic.com/media/cb6b3d_5c8f2b020ebe48b69bc8c163cc480156~mv2.png/v1/fill/w_60,h_60,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/GrowthSutra%20Logo.png') no-repeat center;
+            background-size: contain;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+            z-index: 1;
+        }
+
+        .cover-title {
+            font-size: 4.5em;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 30px;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            line-height: 1.1;
+            z-index: 2;
+            position: relative;
+            max-width: 90%;
+        }
+
+        .cover-subtitle {
+            font-size: 1.8em;
+            font-weight: 300;
+            color: rgba(255,255,255,0.95);
+            margin-bottom: 60px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.4);
+            z-index: 2;
+            position: relative;
+            max-width: 70%;
+        }
+
+        .cover-decorative-line {
+            width: 200px;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent);
+            margin: 40px auto;
+            border-radius: 2px;
+            z-index: 2;
+            position: relative;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+
+        .cover-date {
+            font-size: 1.2em;
+            color: rgba(255,255,255,0.9);
+            font-weight: 400;
+            z-index: 2;
+            position: relative;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        }
+
+        /* CONTENT PAGES STYLES */
+        .content-pages {
+            page-break-before: always;
+        }
+
         .page-logo {
             position: fixed;
             top: 20px;
-            left: 20px;
+            right: 20px;
+            left: auto;
             width: 120px;
             height: 60px;
-            background: url('https://static.wixstatic.com/media/cb6b3d_5c8f2b020ebe48b69bc8c163cc480156~mv2.png/v1/fill/w_60,h_60,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/GrowthSutra%20Logo.png') no-repeat center;
-            background-size: contain;
+            background: #ffffff;
+            border-radius: 8px;
+            background-image: url('https://benori.com/assets/web/images/Benori_Logo.svg');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 80%;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            border: 2px solid rgba(255,255,255,0.3);
             z-index: 1000;
         }
 
@@ -59,7 +220,7 @@
             left: 0;
             right: 0;
             height: 30px;
-            background: linear-gradient(135deg, #4dae40 0%, #0487fa 30%, #1b9c76 60%, #1492c9 100%);
+            background: linear-gradient(135deg, #4F4F4F 0%, #101213 30%, #DBDBDB 60%, #299E75 100%);
             border-radius: 15px 15px 0 0;
             z-index: 999;
         }
@@ -79,23 +240,29 @@
             align-items: center;
             margin-bottom: 50px;
             padding-bottom: 25px;
-            border-bottom: 3px solid #4dae40;
+            border-bottom: 3px solid #4F4F4F;
             page-break-after: avoid;
         }
 
         .logo {
             width: 150px;
             height: 75px;
-            background: url('https://static.wixstatic.com/media/cb6b3d_5c8f2b020ebe48b69bc8c163cc480156~mv2.png/v1/fill/w_60,h_60,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/GrowthSutra%20Logo.png') no-repeat center;
-            background-size: contain;
+            background-color: #ffffff;
+            background-image: url('https://benori.com/assets/web/images/Benori_Logo.svg');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 80%;
+            border-radius: 8px;
             margin-right: 30px;
             flex-shrink: 0;
+            border: 2px solid #4F4F4F;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
         .main-title {
             font-size: 2.5em;
             font-weight: 700;
-            color: #4dae40;
+            color: #4F4F4F;
             margin: 0;
             line-height: 1.2;
         }
@@ -103,7 +270,7 @@
         .section {
             margin-bottom: 25px;
             padding: 30px;
-            border-left: 5px solid #4dae40;
+            border-left: 5px solid #4F4F4F;
             background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
             border-radius: 0 8px 8px 0;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
@@ -116,10 +283,10 @@
         .section-title {
             font-size: 1.6em;
             font-weight: 700;
-            color: #0487fa;
+            color: #101213;
             margin-bottom: 20px;
             text-align: left;
-            border-bottom: 2px solid #4dae40;
+            border-bottom: 2px solid #4F4F4F;
             padding-bottom: 10px;
             page-break-after: avoid;
         }
@@ -150,7 +317,7 @@
 
         .phase-section {
             background: white;
-            border: 2px solid #4dae40;
+            border: 2px solid #4F4F4F;
             border-radius: 8px;
             padding: 25px;
             margin: 15px 0;
@@ -163,7 +330,7 @@
         .phase-title {
             font-size: 1.3em;
             font-weight: 700;
-            color: #1b9c76;
+            color: #DBDBDB;
             margin-bottom: 15px;
             page-break-after: avoid;
         }
@@ -175,7 +342,7 @@
 
         .timeline-item {
             background: white;
-            border-left: 4px solid #1492c9;
+            border-left: 4px solid #299E75;
             margin: 12px 0;
             padding: 20px 25px;
             border-radius: 0 8px 8px 0;
@@ -188,13 +355,13 @@
 
         .timeline-week {
             font-weight: 700;
-            color: #1492c9;
+            color: #299E75;
             font-size: 1.2em;
         }
 
         .pricing-highlight {
             background: linear-gradient(135deg, #e8f5e8 0%, #d4edda 100%);
-            border: 3px solid #1492c9;
+            border: 3px solid #299E75;
             border-radius: 8px;
             padding: 30px;
             margin: 20px 0;
@@ -208,13 +375,13 @@
         .price-amount {
             font-size: 2.2em;
             font-weight: 700;
-            color: #1492c9;
+            color: #299E75;
             margin-bottom: 15px;
             text-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
         .cta-section {
-            background: linear-gradient(135deg, #4dae40 0%, #0487fa 100%);
+            background: linear-gradient(135deg, #4F4F4F 0%, #101213 100%);
             color: white;
             border-radius: 8px;
             padding: 40px;
@@ -242,7 +409,7 @@
         }
 
         .company-info {
-            background: linear-gradient(135deg, #0487fa 0%, #1b9c76 100%);
+            background: linear-gradient(135deg, #101213 0%, #DBDBDB 100%);
             color: white;
             border-radius: 8px;
             padding: 35px;
@@ -268,8 +435,8 @@
         }
 
         .highlight-box {
-            background: linear-gradient(135deg, rgba(78, 172, 157, 0.1) 0%, rgba(77, 174, 64, 0.1) 100%);
-            border: 2px solid #4eac9d;
+            background: linear-gradient(135deg, rgba(219, 219, 219, 0.1) 0%, rgba(79, 79, 79, 0.1) 100%);
+            border: 2px solid #DBDBDB;
             border-radius: 8px;
             padding: 25px;
             margin: 15px 0;
@@ -281,7 +448,7 @@
 
         .highlight-box .highlight-title {
             font-weight: 700;
-            color: #4eac9d;
+            color: #DBDBDB;
             margin-bottom: 10px;
         }
 
@@ -290,6 +457,15 @@
             body {
                 background: white !important;
                 font-size: 12pt;
+            }
+            
+            .cover-page {
+                min-height: 100vh !important;
+                page-break-after: always !important;
+            }
+            
+            .content-pages {
+                page-break-before: always !important;
             }
             
             .page-logo,
@@ -332,6 +508,28 @@
 
         /* Responsive design */
         @media (max-width: 768px) {
+            .cover-page {
+                padding: 20px;
+            }
+            
+            .cover-title {
+                font-size: 3em;
+            }
+            
+            .cover-subtitle {
+                font-size: 1.4em;
+            }
+            
+            .cover-logos {
+                flex-direction: column;
+                gap: 40px;
+            }
+            
+            .cover-logo {
+                width: 150px;
+                height: 90px;
+            }
+            
             .presentation-container {
                 padding: 15px;
             }
@@ -363,71 +561,70 @@
                 font-size: 1.4em;
             }
         }
-        </style>
-</head>
-<body>
-    <div class="page-logo"></div>
-    <div class="page-footer-design"></div>
-    
-    <div class="presentation-container">
-        <div class="header">
-            <div class="logo"></div>
-            <h1 class="main-title">Accelerating Brand & Revenue Growth for TCS: A GrowthSutra Strategic Partnership Proposal</h1>
-        </div>
-
-        <div class="section">
-            <h2 class="section-title">Executive Summary</h2>
-            <div class="section-content">
-                <p>GrowthSutra proposes a comprehensive 8-week brand and revenue growth acceleration program for TCS, designed to enhance your market presence and investor appeal within the technology sector.  Leveraging our team’s extensive experience and data-driven frameworks, we will deliver measurable results within the stipulated timeframe and budget of 10,000 rupees. This proposal outlines our proposed solution, scope of work, timeline, and pricing, demonstrating our commitment to delivering exceptional value and exceeding your expectations.</p>
+        
+            </style>
+        </head>
+        <body>
+            <!-- Enhanced Cover Page -->
+            <div class="cover-page">
+                <div class="cover-logos">
+                    <div class="cover-logo cover-logo-1"></div>
+                    <div class="cover-logo cover-logo-2"></div>
+                </div>
+                <h1 class="cover-title">Title of the sales proposal</h1>
+                <p class="cover-subtitle">Professional Business Presentation</p>
+                <div class="cover-decorative-line"></div>
+                <p class="cover-date">June 10, 2025</p>
             </div>
-        </div>
-
-        <div class="section">
-            <h2 class="section-title">Introduction</h2>
-            <div class="section-content">
-                <p>TCS's partnership with leading investors necessitates a strong brand and revenue growth strategy.  GrowthSutra understands this crucial need and offers a tailored solution to amplify your market impact and attract further investment. Our proven track record of success with startups and SMBs, coupled with our Fortune 500-caliber expertise, ensures a strategic approach that delivers tangible results.  We are confident that this 8-week program, within the allocated budget of 10,000 rupees, will significantly contribute to your overall goals.</p>
+            
+            <!-- Content Pages -->
+            <div class="content-pages">
+                <!-- Fixed Page Elements -->
+                <div class="page-logo"></div>
+                <div class="page-footer-design"></div>
+                
+                <!-- Main Content Container -->
+                <div class="presentation-container">
+                    <header class="header">
+                        <div class="logo"></div>
+                        <h1 class="main-title">Title of the sales proposal</h1>
+                    </header>
+                    
+                    <!-- Dynamic Content Sections -->
+                    
+            <div class="section">
+                <div class="section-title">Title of the sales proposal</div>
+                <div class="section-content"><p>Accelerating Brand & Revenue Growth for TCS: A GrowthSutra Strategic Partnership Proposal</p></div>
             </div>
-        </div>
-
-        <div class="section">
-            <h2 class="section-title">Proposed Solution</h2>
-            <div class="section-content">
-                <p>Our proposed solution is a customized 8-week program designed to enhance TCS's brand visibility, generate leads, and ultimately drive revenue growth.  This program will leverage a combination of strategic marketing, targeted communications, and sales enablement techniques, all tailored to the specific needs and objectives of TCS within the technology sector.  The program will be executed within the allocated budget of 10,000 rupees and will focus on delivering tangible results measurable by key performance indicators (KPIs) agreed upon collaboratively.</p>
+            
+            <div class="section">
+                <div class="section-title">Executive Summary</div>
+                <div class="section-content"><p>GrowthSutra proposes a comprehensive 8-week brand and revenue growth acceleration program for TCS, designed to enhance your market presence and investor appeal within the technology sector.  Leveraging our team’s extensive experience and data-driven frameworks, we will deliver measurable results within the stipulated timeframe and budget of 10,000 rupees. This proposal outlines our proposed solution, scope of work, timeline, and pricing, demonstrating our commitment to delivering exceptional value and exceeding your expectations.</p></div>
             </div>
-        </div>
-
-        <div class="section">
-            <h2 class="section-title">Technology Stack</h2>
-            <div class="section-content">
-                <p>The technology stack utilized will be determined based on the specific needs identified during the initial discovery phase.  However, we are proficient in utilizing a wide range of tools and platforms, including CRM systems, marketing automation software, social media management tools, and analytics dashboards, to ensure efficient and effective campaign management and data analysis.  Our flexibility ensures we can seamlessly integrate with existing TCS systems.</p>
+            
+            <div class="section">
+                <div class="section-title">Introduction</div>
+                <div class="section-content"><p>TCS's partnership with leading investors necessitates a strong brand and revenue growth strategy.  GrowthSutra understands this crucial need and offers a tailored solution to amplify your market impact and attract further investment. Our proven track record of success with startups and SMBs, coupled with our Fortune 500-caliber expertise, ensures a strategic approach that delivers tangible results.  We are confident that this 8-week program, within the allocated budget of 10,000 rupees, will significantly contribute to your overall goals.</p></div>
             </div>
-        </div>
-
-        <div class="section">
-            <h2 class="section-title">Pricing & Payment Terms</h2>
-            <div class="section-content">
-                <p>The total cost for this 8-week program is 10,000 rupees. Payment terms can be discussed and tailored to suit your preferences.  We are open to exploring various payment schedules to ensure a smooth and mutually beneficial arrangement.</p>
+            
+            <div class="company-info">
+                <div class="company-title">Company Overview</div>
+                <div class="company-content"><p>GrowthSutra is a leading brand and revenue growth consultancy specializing in accelerating the success of startups and SMBs. Our team comprises seasoned marketing, communications, sales, and leadership executives with over 20+ years of experience in diverse industries. We combine strategic thinking with flawless execution, leveraging data-driven frameworks and rigorous project governance to deliver measurable results. We've helped numerous clients gain market access, customer traction, and investor interest, and we are confident we can replicate this success for TCS.</p></div>
             </div>
-        </div>
-
-        <div class="section">
-            <h2 class="section-title">Client Testimonials</h2>
-            <div class="section-content">
-                <p>Due to client confidentiality agreements, we are unable to publicly share specific client testimonials at this time. However, we would be happy to provide references upon request.</p>
+            
+            <div class="section">
+                <div class="section-title">Proposed Solution</div>
+                <div class="section-content"><p>Our proposed solution is a customized 8-week program designed to enhance TCS's brand visibility, generate leads, and ultimately drive revenue growth.  This program will leverage a combination of strategic marketing, targeted communications, and sales enablement techniques, all tailored to the specific needs and objectives of TCS within the technology sector.  The program will be executed within the allocated budget of 10,000 rupees and will focus on delivering tangible results measurable by key performance indicators (KPIs) agreed upon collaboratively.</p></div>
             </div>
-        </div>
-
-        <div class="section">
-            <h2 class="section-title">Appendix</h2>
-            <div class="section-content">
-                <p>(Optional: Include relevant supporting documents, case studies, or other materials here.)</p>
+            
+            <div class="section">
+                <div class="section-title">Technology Stack</div>
+                <div class="section-content"><p>The technology stack utilized will be determined based on the specific needs identified during the initial discovery phase.  However, we are proficient in utilizing a wide range of tools and platforms, including CRM systems, marketing automation software, social media management tools, and analytics dashboards, to ensure efficient and effective campaign management and data analysis.  Our flexibility ensures we can seamlessly integrate with existing TCS systems.</p></div>
             </div>
-        </div>
-
-        <div class="section">
-            <h2 class="section-title">Scope of Work / Project Breakdown</h2>
-            <div class="section-content">
-                <p>This 8-week program is structured into four key phases, all designed to deliver measurable results within the 10,000 rupee budget:</p>
+            
+            <div class="section">
+                <div class="section-title">Scope of Work / Project Breakdown</div>
+                <div class="section-content"><p>This 8-week program is structured into four key phases, all designed to deliver measurable results within the 10,000 rupee budget:</p>
 <p><strong>Phase 1: Discovery & Strategy (Week 1-2)</strong></p>
 <ul>
 <li>Conduct initial consultations with key stakeholders at TCS to understand business goals, target audience, and competitive landscape.</li>
@@ -459,58 +656,73 @@
 <li>Analyze data to identify areas for improvement.</li>
 <li>Present final findings and recommendations to TCS leadership.</li>
 <li>Develop a plan for ongoing marketing and sales activities.</li>
-</ul>
+</ul></div>
             </div>
-        </div>
-
-        <div class="section">
-            <h2 class="section-title">Timeline & Milestones</h2>
-            <div class="section-content">
-                <p>The entire project will be completed within 8 weeks, adhering to the following key milestones:</p>
-<ul>
-<li><strong>Week 2:</strong> Completion of discovery phase and strategic plan.</li>
-<li><strong>Week 4:</strong> Completion of brand enhancement and messaging materials.</li>
-<li><strong>Week 6:</strong> Implementation of lead generation and sales enablement strategies.</li>
-<li><strong>Week 8:</strong> Final reporting, analysis, and recommendations.</li>
-</ul>
+            <div class="section"><div class="section-title">Timeline & Milestones</div>
+                        <div class="timeline-item">
+                            <div class="timeline-week"><p>The entire project will be completed within 8 weeks, adhering to the following key milestones:</p></div>
+                            <div><p><ul></p><p><li><strong></p></div>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <div class="timeline-week">Week 2:</strong> Completion of discovery phase and strategic plan.</li></div>
+                            <div><p><li><strong></p></div>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <div class="timeline-week">Week 4:</strong> Completion of brand enhancement and messaging materials.</li></div>
+                            <div><p><li><strong></p></div>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <div class="timeline-week">Week 6:</strong> Implementation of lead generation and sales enablement strategies.</li></div>
+                            <div><p><li><strong></p></div>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <div class="timeline-week">Week 8:</strong> Final reporting, analysis, and recommendations.</li></div>
+                            <div><p></ul></p></div>
+                        </div>
+                        </div>
+                <div class="section">
+                    <div class="section-title">Pricing & Payment Terms</div>
+                    <div class="pricing-highlight">
+                        <div class="section-content"><p>The total cost for this 8-week program is 10,000 rupees. Payment terms can be discussed and tailored to suit your preferences.  We are open to exploring various payment schedules to ensure a smooth and mutually beneficial arrangement.</p></div>
+                    </div>
+                </div>
+                
+            <div class="section">
+                <div class="section-title">Team & Expertise</div>
+                <div class="section-content"><p>Our team consists of seasoned professionals with extensive experience in marketing, sales, and brand management.  Each member brings over 20 years of experience and a proven track record of success. We are confident in our ability to deliver exceptional results for TCS, leveraging our collective expertise to achieve your business objectives.</p></div>
             </div>
-        </div>
-
-        <div class="company-info">
-            <div class="company-title">Company Overview</div>
-            <div class="company-content">
-                <p>GrowthSutra is a leading brand and revenue growth consultancy specializing in accelerating the success of startups and SMBs. Our team comprises seasoned marketing, communications, sales, and leadership executives with over 20+ years of experience in diverse industries. We combine strategic thinking with flawless execution, leveraging data-driven frameworks and rigorous project governance to deliver measurable results. We've helped numerous clients gain market access, customer traction, and investor interest, and we are confident we can replicate this success for TCS.</p>
+            
+            <div class="section">
+                <div class="section-title">Client Testimonials</div>
+                <div class="section-content"><p>Due to client confidentiality agreements, we are unable to publicly share specific client testimonials at this time. However, we would be happy to provide references upon request.</p></div>
             </div>
-        </div>
-
-        <div class="company-info">
-            <div class="company-title">Team & Expertise</div>
-            <div class="company-content">
-                <p>Our team consists of seasoned professionals with extensive experience in marketing, sales, and brand management.  Each member brings over 20 years of experience and a proven track record of success. We are confident in our ability to deliver exceptional results for TCS, leveraging our collective expertise to achieve your business objectives.</p>
+            
+            <div class="cta-section">
+                <div class="cta-title">Next Steps & Call to Action</div>
+                <div class="cta-content"><p>We are eager to partner with TCS to accelerate your brand and revenue growth. We propose a follow-up meeting to discuss this proposal in more detail and answer any questions you may have.  Please contact us at your earliest convenience to schedule a time to connect.</p></div>
             </div>
-        </div>
-
-        <div class="company-info">
-            <div class="company-title">Who We Are</div>
-            <div class="company-content">
-                <p>GrowthSutra is a leading brand and revenue growth consultancy dedicated to helping startups and SMBs achieve their full potential. We provide Fortune 500-caliber strategic thinking and flawless execution to drive measurable results.</p>
+            
+            <div class="section">
+                <div class="section-title">Appendix</div>
+                <div class="section-content"><p>(Optional: Include relevant supporting documents, case studies, or other materials here.)</p></div>
             </div>
-        </div>
-
-        <div class="company-info">
-            <div class="company-title">What We Do</div>
-            <div class="company-content">
-                <p>We offer a comprehensive suite of services, including brand strategy, marketing, sales enablement, and communications, all tailored to meet the unique needs of each client. Our data-driven approach and rigorous project governance ensure that we deliver exceptional value and exceed expectations.</p>
+            
+            <div class="company-info">
+                <div class="company-title">Who We Are</div>
+                <div class="company-content"><p>GrowthSutra is a leading brand and revenue growth consultancy dedicated to helping startups and SMBs achieve their full potential. We provide Fortune 500-caliber strategic thinking and flawless execution to drive measurable results.</p></div>
             </div>
-        </div>
-
-        <div class="cta-section">
-            <div class="cta-title">Next Steps & Call to Action</div>
-            <div class="cta-content">
-                <p>We are eager to partner with TCS to accelerate your brand and revenue growth. We propose a follow-up meeting to discuss this proposal in more detail and answer any questions you may have.  Please contact us at your earliest convenience to schedule a time to connect.</p>
+            
+            <div class="section">
+                <div class="section-title">What We Do</div>
+                <div class="section-content"><p>We offer a comprehensive suite of services, including brand strategy, marketing, sales enablement, and communications, all tailored to meet the unique needs of each client. Our data-driven approach and rigorous project governance ensure that we deliver exceptional value and exceed expectations.</p></div>
             </div>
-        </div>
-
-    </div>
-</body>
-</html>
+            
+                </div>
+            </div>
+        </body>
+        </html>
+        
